@@ -14,19 +14,28 @@
   box-shadow: inset 0 0 0 3px var(--ring), 0 6px 0 rgba(0, 0, 0, .3);
   display: flex; align-items: center; justify-content: center;
 }
-.frame__inner { width: 50px; height: 70px; }
+/* 窗口只留一帧大小，多余两帧裁掉 */
+.frame__inner {
+  width: 50px; height: 70px;
+  overflow: hidden;
+}
 
-/* 3 帧硬切：雪碧图 150×70，每帧 50×70 */
+/* 3 帧硬切：雪碧图 450×210（单帧 150×210），按 150×70 布局，
+   1.05s 循环，靠 margin 位移换帧。
+   注意：不能用 background-image 引本地图，小程序 WXSS 不支持本地资源。 */
 .hero {
   width: 50px; height: 70px;
-  background-image: url('/assets/splash/hero-3f.png');
-  background-repeat: no-repeat;
-  background-size: 150px 70px;
-  animation: heroLift 1.05s steps(3) infinite;
+  overflow: hidden;
+}
+.hero__strip {
+  display: block;
+  width: 150px; height: 70px;
+  animation: heroLift 1.05s steps(1, end) infinite;
 }
 @keyframes heroLift {
-  from { background-position: 0 0; }
-  to   { background-position: -150px 0; }
+  0%,      33.32%  { margin-left: 0; }
+  33.33%,  66.65%  { margin-left: -50px; }
+  66.66%,  100%    { margin-left: -100px; }
 }
 
 .slogan {

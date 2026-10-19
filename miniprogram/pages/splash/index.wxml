@@ -1,7 +1,9 @@
 <view class="splash" bindtap="onSkip">
   <view class="frame">
     <view class="frame__inner">
-      <view class="hero"></view>
+      <view class="hero">
+        <image class="hero__strip" src="/assets/splash/hero-3f.png" mode="scaleToFill" />
+      </view>
     </view>
   </view>
 

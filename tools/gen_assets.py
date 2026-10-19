@@ -304,7 +304,9 @@ def gen_sprite():
     sheet = Image.new("RGBA", (W * 3, H), (0, 0, 0, 0))
     for i, f in enumerate(frames):
         sheet.paste(f, (i * W, 0))
-    save(sheet, os.path.join(SPLASH_DIR, "hero-3f.png"), 2)   # 50×70 / 帧
+    # 6 倍：整图 450×210，单帧 150×210。WXSS 里按 150×70 布局（单帧 50×70），
+    # 主流 DPR=3 手机正好 1:1 物理像素对应，像素不糊；DPR=2 时 2:1 整数降采样也锐利。
+    save(sheet, os.path.join(SPLASH_DIR, "hero-3f.png"), 6)
     # 单帧另存，方便当分享卡封面
     save(frames[2], os.path.join(SPLASH_DIR, "hero-cover.png"), 6)
 
