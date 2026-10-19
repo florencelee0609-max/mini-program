@@ -42,7 +42,7 @@
   <view class="safe-bottom"></view>
 </view>
 
-<px-sheet show="{{showInvite}}" title="把邀请码发给朋友" bind:close="onCloseInvite">
+<px-sheet kb="{{kb}}" show="{{showInvite}}" title="把邀请码发给朋友" bind:close="onCloseInvite">
   <view class="code">{{inviteCode}}</view>
   <view class="sub center mt-1">一次性，7 天内有效</view>
   <button class="px-btn px-btn--primary px-btn--block mt-3" open-type="share">转发邀请卡</button>
@@ -50,7 +50,7 @@
   <view class="hr mt-3"></view>
   <view class="sub">对方不在这条聊天里？让他打开小程序输入邀请码</view>
   <view class="row gap-2 mt-1">
-    <input adjust-position="{{false}}" class="px-input grow" maxlength="6" value="{{codeInput}}" bindinput="onCode" placeholder="6 位邀请码" />
+    <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input grow" maxlength="6" value="{{codeInput}}" bindinput="onCode" placeholder="6 位邀请码" />
     <view class="px-btn px-btn--sm" bindtap="onAcceptCode">接受</view>
   </view>
 </px-sheet>

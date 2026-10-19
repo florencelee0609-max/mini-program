@@ -69,8 +69,8 @@
   <view class="safe-bottom"></view>
 </view>
 
-<px-sheet show="{{showNick}}" title="昵称和头像" bind:close="onCloseNick">
-  <input adjust-position="{{false}}" class="px-input" maxlength="12" value="{{nick}}" bindinput="onNickInput" placeholder="不填就叫「神秘大理论家」" />
+<px-sheet kb="{{kb}}" show="{{showNick}}" title="昵称和头像" bind:close="onCloseNick">
+  <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input" maxlength="12" value="{{nick}}" bindinput="onNickInput" placeholder="不填就叫「神秘大理论家」" />
   <view class="avatars mt-3">
     <view wx:for="{{avatars}}" wx:key="*this"
           class="av {{pick === item ? 'av--on' : ''}}"

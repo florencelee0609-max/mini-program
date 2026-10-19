@@ -82,9 +82,9 @@
   <view class="safe-bottom"></view>
 </view>
 
-<px-sheet show="{{sheet}}" title="{{sheetTitle}}" bind:close="closeSheet">
+<px-sheet kb="{{kb}}" show="{{sheet}}" title="{{sheetTitle}}" bind:close="closeSheet">
   <view class="sheet-row">
-    <input adjust-position="{{false}}" class="px-input num grow" type="digit" value="{{sheetValue}}" bindinput="onSheetInput"
+    <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input num grow" type="digit" value="{{sheetValue}}" bindinput="onSheetInput"
            placeholder="留空 = 不记录" focus="{{sheet}}" />
     <text class="sheet-unit">{{sheetUnit}}</text>
   </view>

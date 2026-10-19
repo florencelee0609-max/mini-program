@@ -187,5 +187,18 @@ Page({
       if (wx.vibrateShort) wx.vibrateShort({ type: 'light' })
       cloud.pushPendingScores()
     }
+  },
+
+  // 键盘高度：input 聚焦时把键盘高度传给 px-sheet，让弹层整体抬到键盘上方。
+  // 用 e.detail.height（基础库 1.0 起就有），比 wx.onKeyboardHeightChange 稳定 ——
+  // 后者在真机上曾返回异常值，把弹层直接顶出屏幕。
+  onKbFocus: function (e) {
+    const d = (e && e.detail) || {}
+    const h = Number(d.height)
+    this.setData({ kb: isNaN(h) || h < 0 ? 0 : h })
+  },
+
+  onKbBlur: function () {
+    this.setData({ kb: 0 })
   }
 })

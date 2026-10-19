@@ -72,13 +72,13 @@
 
 <view wx:if="{{pop}}" class="pop">+10</view>
 
-<px-sheet show="{{sheet}}" title="{{sheetTitle}}" bind:close="closeSheet">
+<px-sheet kb="{{kb}}" show="{{sheet}}" title="{{sheetTitle}}" bind:close="closeSheet">
   <block wx:if="{{sheetMode === 'record'}}">
     <view wx:if="{{planText}}" class="sub" style="margin-bottom:8px">
       {{planText}} · 练完记得记时长
     </view>
     <view class="sub">时长（分钟）</view>
-    <input adjust-position="{{false}}" class="px-input num mt-1" type="number" value="{{fMinutes}}" bindinput="onMinutes" focus="{{sheet}}" />
+    <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input num mt-1" type="number" value="{{fMinutes}}" bindinput="onMinutes" focus="{{sheet}}" />
     <view class="sub mt-3">强度</view>
     <view class="row gap-2 mt-1">
       <view wx:for="{{intensities}}" wx:key="key"
@@ -86,20 +86,20 @@
             data-k="{{item.key}}" bindtap="onIntensity">{{item.label}}</view>
     </view>
     <view class="sub mt-3">备注（可选）</view>
-    <input adjust-position="{{false}}" class="px-input mt-1" maxlength="20" value="{{fNote}}" bindinput="onNote" placeholder="例如 腿举 80kg" />
+    <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input mt-1" maxlength="20" value="{{fNote}}" bindinput="onNote" placeholder="例如 腿举 80kg" />
   </block>
 
   <block wx:if="{{sheetMode === 'custom'}}">
     <view class="sub">项目名称</view>
-    <input adjust-position="{{false}}" class="px-input mt-1" maxlength="12" value="{{fName}}" bindinput="onName" focus="{{sheet}}" placeholder="例如 壶铃摇摆" />
+    <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input mt-1" maxlength="12" value="{{fName}}" bindinput="onName" focus="{{sheet}}" placeholder="例如 壶铃摇摆" />
     <view class="row gap-2 mt-3">
       <view class="grow">
         <view class="sub">做几组</view>
-        <input adjust-position="{{false}}" class="px-input num mt-1" type="number" value="{{fSets}}" bindinput="onSets" />
+        <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input num mt-1" type="number" value="{{fSets}}" bindinput="onSets" />
       </view>
       <view class="grow">
         <view class="sub">每组几次</view>
-        <input adjust-position="{{false}}" class="px-input num mt-1" type="number" value="{{fReps}}" bindinput="onReps" />
+        <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input num mt-1" type="number" value="{{fReps}}" bindinput="onReps" />
       </view>
     </view>
     <view class="sub mt-2">会显示成「3 组 × 12 次」，记录时按这个做</view>
@@ -107,7 +107,7 @@
 
   <block wx:if="{{sheetMode === 'freq'}}">
     <view class="sub">每周力量训练次数（1–7）</view>
-    <input adjust-position="{{false}}" class="px-input num mt-1" type="number" value="{{fFreq}}" bindinput="onFreqInput" focus="{{sheet}}" />
+    <input bindfocus="onKbFocus" bindblur="onKbBlur" adjust-position="{{false}}" class="px-input num mt-1" type="number" value="{{fFreq}}" bindinput="onFreqInput" focus="{{sheet}}" />
   </block>
 
   <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onSave">保存</view>

@@ -106,5 +106,18 @@ Page({
       content: '记录只存在这台手机上，删小程序就没了，请定期导出备份。榜单上的分数存在云端。公式估算，非医疗建议。',
       showCancel: false
     })
+  },
+
+  // 键盘高度：input 聚焦时把键盘高度传给 px-sheet，让弹层整体抬到键盘上方。
+  // 用 e.detail.height（基础库 1.0 起就有），比 wx.onKeyboardHeightChange 稳定 ——
+  // 后者在真机上曾返回异常值，把弹层直接顶出屏幕。
+  onKbFocus: function (e) {
+    const d = (e && e.detail) || {}
+    const h = Number(d.height)
+    this.setData({ kb: isNaN(h) || h < 0 ? 0 : h })
+  },
+
+  onKbBlur: function () {
+    this.setData({ kb: 0 })
   }
 })

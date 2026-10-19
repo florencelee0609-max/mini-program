@@ -1,38 +1,40 @@
 Component({
   properties: {
     show: { type: Boolean, value: false },
-    title: { type: String, value: '' }
+    title: { type: String, value: '' },
+    // 键盘高度（px），由页面在 input 的 focus 事件里传入。
+    // 用 input 的 e.detail.height 而不是 wx.onKeyboardHeightChange：
+    // 前者从基础库 1.0 就有，是官方文档明确的字段；后者在真机上返回的
+    // 值不可控（曾把弹层直接顶出屏幕，表现为「弹层消失」）。
+    kb: { type: Number, value: 0 }
   },
 
   data: {
-    // 键盘高度（px），0 表示收起。
-    // 弹层是 position:fixed; bottom:0，键盘弹起时 fixed 元素不会自动上移，
-    // 会把底部的「保存」按钮盖住，所以这里主动把弹层抬高。
-    kb: 0
+    // 实际用于定位的高度，已夹紧到安全范围
+    innerKb: 0
+  },
+
+  observers: {
+    kb: function (v) {
+      const n = Number(v)
+      const raw = isNaN(n) || n < 0 ? 0 : n
+      // 硬上限：键盘再高也不超过窗口高度的 60%。
+      // 这一层是防止任何异常值把 bottom 顶到屏幕外 —— 宁可位置略低，也不能消失。
+      const cap = this._maxKb || 400
+      const capped = Math.min(raw, cap)
+      if (capped !== this.data.innerKb) this.setData({ innerKb: capped })
+    }
   },
 
   lifetimes: {
     attached: function () {
-      // 全局键盘高度监听。不用给 slot 里的 input 逐个绑 focus：
-      // slot 内容属于父页面作用域，组件内拿不到它们的事件。
-      if (typeof wx !== 'undefined' && wx.onKeyboardHeightChange) {
-        this._kbHandler = (res) => {
-          const h = (res && res.height) || 0
-          // 只更新「正在显示」的弹层：tab 页不会销毁，未打开的实例没必要跟着重渲染。
-          // 收起（h=0）时一律归零，避免残留高度把下次打开顶偏。
-          if (h === this.data.kb) return
-          if (h !== 0 && !this.data.show) return
-          this.setData({ kb: h })
-        }
-        wx.onKeyboardHeightChange(this._kbHandler)
-      }
-    },
-
-    detached: function () {
-      if (this._kbHandler && typeof wx !== 'undefined' && wx.offKeyboardHeightChange) {
-        wx.offKeyboardHeightChange(this._kbHandler)
-      }
-      this._kbHandler = null
+      let wh = 667
+      try {
+        const info = (wx.getWindowInfo && wx.getWindowInfo()) ||
+                     (wx.getSystemInfoSync && wx.getSystemInfoSync()) || {}
+        wh = info.windowHeight || wh
+      } catch (e) {}
+      this._maxKb = Math.round(wh * 0.6)
     }
   },
 

@@ -1,6 +1,8 @@
 <view wx:if="{{show}}" class="sheet-mask" bindtap="onClose" catchtouchmove="noop"></view>
-<view class="sheet {{show ? 'sheet--on' : ''}} {{kb > 0 ? 'sheet--kb' : ''}}"
-      style="bottom:{{kb}}px" catchtouchmove="noop">
+<!-- innerKb 为 0 时 style 留空，完全回到 CSS 的 bottom:0，保证「没有键盘」时
+     的行为与最初版本一模一样，不给异常值留任何机会。 -->
+<view class="sheet {{show ? 'sheet--on' : ''}} {{innerKb > 0 ? 'sheet--kb' : ''}}"
+      style="{{innerKb > 0 ? 'bottom:' + innerKb + 'px' : ''}}" catchtouchmove="noop">
   <view class="sheet__bar"></view>
   <view class="sheet__head">
     <text class="sheet__title">{{title}}</text>
