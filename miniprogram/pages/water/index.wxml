@@ -75,7 +75,7 @@
 
 <px-sheet show="{{showSheet}}" title="今天一共喝了多少升" bind:close="onCloseSheet">
   <view class="sheet-row">
-    <input class="px-input num grow" type="digit" value="{{tmp}}" bindinput="onTmp" focus="{{showSheet}}" placeholder="例如 1.2" />
+    <input adjust-position="{{false}}" class="px-input num grow" type="digit" value="{{tmp}}" bindinput="onTmp" focus="{{showSheet}}" placeholder="例如 1.2" />
     <text class="sheet-unit">升</text>
   </view>
   <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onSaveTotal">保存</view>

@@ -70,7 +70,7 @@
 </view>
 
 <px-sheet show="{{showNick}}" title="昵称和头像" bind:close="onCloseNick">
-  <input class="px-input" maxlength="12" value="{{nick}}" bindinput="onNickInput" placeholder="不填就叫「神秘大理论家」" />
+  <input adjust-position="{{false}}" class="px-input" maxlength="12" value="{{nick}}" bindinput="onNickInput" placeholder="不填就叫「神秘大理论家」" />
   <view class="avatars mt-3">
     <view wx:for="{{avatars}}" wx:key="*this"
           class="av {{pick === item ? 'av--on' : ''}}"

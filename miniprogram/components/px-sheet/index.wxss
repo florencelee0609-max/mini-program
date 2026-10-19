@@ -16,6 +16,14 @@
   pointer-events: none;
 }
 .sheet--on { transform: translateY(0); pointer-events: auto; }
+
+/* 键盘弹起：组件已把 bottom 抬到键盘高度（内联 style），
+   这里再压缩内容区并收掉底部安全区，保证「保存」按钮始终在键盘上方可见。
+   不加 transition —— 跟随键盘自身的弹出动画更自然。 */
+.sheet--kb .sheet__safe { height: 8px; }
+.sheet--kb .sheet__body { max-height: 40vh; }
+.sheet--kb .sheet__bar { margin-top: 6px; }
+.sheet--kb .sheet__head { padding: 6px 0 6px; }
 .sheet__bar {
   width: 44px; height: 4px; border-radius: 2px;
   background: #E8C68C; margin: 8px auto 0;

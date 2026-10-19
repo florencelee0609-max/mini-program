@@ -50,7 +50,7 @@
   <view class="hr mt-3"></view>
   <view class="sub">对方不在这条聊天里？让他打开小程序输入邀请码</view>
   <view class="row gap-2 mt-1">
-    <input class="px-input grow" maxlength="6" value="{{codeInput}}" bindinput="onCode" placeholder="6 位邀请码" />
+    <input adjust-position="{{false}}" class="px-input grow" maxlength="6" value="{{codeInput}}" bindinput="onCode" placeholder="6 位邀请码" />
     <view class="px-btn px-btn--sm" bindtap="onAcceptCode">接受</view>
   </view>
 </px-sheet>
