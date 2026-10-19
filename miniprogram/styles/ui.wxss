@@ -1,0 +1,149 @@
+/* ============ 通用 UI 组件（用 class 而非自定义组件，减少包体与层级） ============ */
+
+/* 卡片：3px 深棕描边 + 内嵌 2px 浅麦线 + 底部 4px 实心投影 + 12px 圆角 */
+.px-card {
+  position: relative;
+  background: var(--cream);
+  border: var(--bw) solid var(--wood);
+  border-radius: var(--r-card);
+  box-shadow: inset 0 0 0 2px var(--ring), 0 4px 0 rgba(0, 0, 0, .28);
+  padding: 12px;
+  overflow: hidden;
+}
+.px-card + .px-card { margin-top: 10px; }
+.px-card--flat { box-shadow: inset 0 0 0 2px var(--ring); }
+.px-card--tap { transition: transform 60ms linear, box-shadow 60ms linear; }
+.px-card--tap:active { transform: translateY(2px); box-shadow: inset 0 0 0 2px var(--ring), 0 2px 0 rgba(0, 0, 0, .28); }
+
+/* 左侧色条 */
+.px-card__accent {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+  background: var(--wood);
+}
+.px-card--water .px-card__accent { background: var(--water); }
+.px-card--fire .px-card__accent { background: var(--fire); }
+.px-card--night .px-card__accent { background: var(--night); }
+.px-card--grass .px-card__accent { background: var(--grass); }
+.px-card--gold .px-card__accent { background: var(--gold); }
+
+/* ============ 按钮 ============ */
+.px-btn {
+  display: flex; align-items: center; justify-content: center;
+  height: 44px; padding: 0 14px;
+  border: var(--bw) solid var(--wood);
+  border-radius: var(--r-btn);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px; font-weight: 800;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, .3);
+  transition: transform 60ms linear, box-shadow 60ms linear;
+}
+.px-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0, 0, 0, .3); }
+.px-btn--primary { background: var(--gold); }
+.px-btn--dark { background: var(--ink); color: var(--cream); }
+.px-btn--block { width: 100%; }
+.px-btn--sm { height: 34px; font-size: 12px; padding: 0 10px; border-radius: 9px; }
+.px-btn--disabled { opacity: .45; }
+.px-btn--disabled:active { transform: none; box-shadow: 0 4px 0 rgba(0, 0, 0, .3); }
+
+/* ============ 图标块 ============ */
+.px-ico {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 7px;
+  border: 2px solid var(--wood);
+  background: var(--wheat);
+  flex: none;
+}
+.px-ico--water { background: var(--water); }
+.px-ico--fire  { background: var(--fire); }
+.px-ico--night { background: var(--night); }
+.px-ico--grass { background: var(--grass); }
+.px-ico--gold  { background: var(--gold); }
+.px-ico--plain { background: transparent; border-color: transparent; }
+
+/* ============ 10 格分段进度 ============ */
+.px-progress { display: flex; align-items: center; gap: 2px; height: 12px; }
+.px-progress__cell {
+  flex: 1; height: 12px; border-radius: 3px;
+  background: var(--ring);
+  border: 1px solid rgba(94, 60, 34, .35);
+}
+.px-progress__cell--on { background: var(--water); border-color: var(--wood); }
+.px-progress--fire .px-progress__cell--on { background: var(--fire); }
+.px-progress--night .px-progress__cell--on { background: var(--night); }
+.px-progress--grass .px-progress__cell--on { background: var(--grass); }
+.px-progress--gold .px-progress__cell--on { background: var(--gold); }
+
+/* ============ 输入 ============ */
+.px-input {
+  height: 44px; padding: 0 12px;
+  border: var(--bw) solid var(--wood);
+  border-radius: var(--r-btn);
+  background: var(--cream);
+  box-shadow: inset 0 0 0 2px var(--ring);
+  font-size: 16px; font-weight: 800; color: var(--ink);
+}
+.px-input--err { border-color: var(--fire); }
+
+/* 选择行（表单） */
+.px-field { margin-bottom: 12px; }
+.px-field__label { font-size: 11px; font-weight: 800; color: var(--ink-2); margin-bottom: 4px; }
+.px-field__err { font-size: 10px; color: var(--fire); margin-top: 3px; font-weight: 800; }
+
+/* 分段选择（今日/本周/累计 等） */
+.px-seg {
+  display: flex; background: var(--wheat);
+  border: var(--bw) solid var(--wood);
+  border-radius: var(--r-btn);
+  padding: 2px; gap: 2px;
+}
+.px-seg__item {
+  flex: 1; text-align: center; line-height: 30px;
+  font-size: 12px; font-weight: 800; color: var(--ink-2);
+  border-radius: 8px;
+}
+.px-seg__item--on { background: var(--ink); color: var(--cream); }
+
+/* ============ 列表行 ============ */
+.px-row {
+  display: flex; align-items: center;
+  min-height: 44px; padding: 6px 0;
+}
+.px-row + .px-row { border-top: 2px solid var(--ring); }
+.px-row__title { font-size: 13px; font-weight: 800; }
+.px-row__sub { font-size: 10px; color: var(--ink-2); margin-top: 2px; }
+.px-row__arrow { font-size: 14px; color: var(--ink-2); margin-left: 8px; }
+
+/* 徽标 */
+.px-badge {
+  min-width: 20px; height: 20px; padding: 0 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--ink); color: var(--cream);
+  font-size: 10px; font-weight: 800;
+  border-radius: 6px;
+}
+
+/* +10 飘字 */
+.float10 {
+  position: absolute; right: 10px; top: 8px;
+  font-size: 13px; font-weight: 800; color: var(--grass);
+  animation: float10 900ms linear forwards;
+  pointer-events: none;
+}
+@keyframes float10 {
+  0%   { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-24px); }
+}
+
+/* 底部安全区 */
+.safe-bottom { height: calc(12px + env(safe-area-inset-bottom)); }
+
+/* 页脚说明（木纹底上的小字） */
+.foot {
+  text-align: center;
+  font-size: 9px;
+  color: #F7E3BC;
+  opacity: .72;
+  margin-top: 12px;
+  line-height: 1.7;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "dt_score",
+  "version": "1.0.0",
+  "description": "积分发分（幂等 + 服务器时间）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

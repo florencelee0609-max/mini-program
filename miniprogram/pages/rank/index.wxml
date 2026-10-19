@@ -1,0 +1,56 @@
+<px-navbar title="大理论榜" sub="只有你和你的搭子" back="{{false}}" />
+
+<view class="page">
+  <view class="px-seg mt-2">
+    <view class="px-seg__item {{period === 'today' ? 'px-seg__item--on' : ''}}" data-p="today" bindtap="onPeriod">今日</view>
+    <view class="px-seg__item {{period === 'week' ? 'px-seg__item--on' : ''}}" data-p="week" bindtap="onPeriod">本周</view>
+    <view class="px-seg__item {{period === 'total' ? 'px-seg__item--on' : ''}}" data-p="total" bindtap="onPeriod">累计</view>
+  </view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-2" bindtap="onInvite">
+    <image class="inv-ico" src="/assets/icons/invite.png" mode="aspectFit" />
+    <text style="margin-left:5px">邀请搭子</text>
+  </view>
+
+  <view wx:if="{{!cloudOn}}" class="notice-card">
+    <view class="h3">榜单还没接上云端</view>
+    <view class="sub mt-1">两个人要比分数，分数就得放在双方都能读的地方。开云开发之后这里才会有别人。</view>
+    <view class="sub mt-2">现在显示的是你这台手机上的分数。</view>
+  </view>
+
+  <view class="px-card list mt-2">
+    <view wx:for="{{list}}" wx:key="id"
+          class="rankrow {{item.isMe ? 'rankrow--me' : ''}}">
+      <view class="rankrow__no num">{{index + 1}}</view>
+      <view class="rankrow__av">
+        <image class="rankrow__img" src="/assets/avatar/{{item.hideRank ? 'a08' : item.avatarKey}}.png" mode="aspectFit" />
+      </view>
+      <view class="grow">
+        <view class="rankrow__name">{{item.hideRank ? '隐身中' : item.nickname}}</view>
+        <view wx:if="{{item.isMe}}" class="rankrow__me">我</view>
+      </view>
+      <view class="rankrow__score num">{{item.hideRank ? '—' : item.score}}</view>
+      <image wx:if="{{index === 0 && !item.hideRank}}" class="crown" src="/assets/icons/crown.png" mode="aspectFit" />
+    </view>
+
+    <view wx:if="{{list.length === 1}}" class="empty-slot">
+      邀请一个搭子来比比
+    </view>
+  </view>
+
+  <view class="sub center mt-2">榜上只有昵称、头像、分数、名次，看不到任何记录明细</view>
+  <view class="safe-bottom"></view>
+</view>
+
+<px-sheet show="{{showInvite}}" title="把邀请码发给朋友" bind:close="onCloseInvite">
+  <view class="code">{{inviteCode}}</view>
+  <view class="sub center mt-1">一次性，7 天内有效</view>
+  <button class="px-btn px-btn--primary px-btn--block mt-3" open-type="share">转发邀请卡</button>
+  <view class="px-btn px-btn--block mt-2" bindtap="onCloseInvite">知道了</view>
+  <view class="hr mt-3"></view>
+  <view class="sub">对方不在这条聊天里？让他打开小程序输入邀请码</view>
+  <view class="row gap-2 mt-1">
+    <input class="px-input grow" maxlength="6" value="{{codeInput}}" bindinput="onCode" placeholder="6 位邀请码" />
+    <view class="px-btn px-btn--sm" bindtap="onAcceptCode">接受</view>
+  </view>
+</px-sheet>

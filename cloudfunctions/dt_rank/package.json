@@ -1,0 +1,9 @@
+{
+  "name": "dt_rank",
+  "version": "1.0.0",
+  "description": "榜单聚合（今日/本周/累计）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

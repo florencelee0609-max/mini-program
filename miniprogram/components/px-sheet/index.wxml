@@ -1,0 +1,14 @@
+<view wx:if="{{show}}" class="sheet-mask" bindtap="onClose" catchtouchmove="noop"></view>
+<view class="sheet {{show ? 'sheet--on' : ''}}" catchtouchmove="noop">
+  <view class="sheet__bar"></view>
+  <view class="sheet__head">
+    <text class="sheet__title">{{title}}</text>
+    <view class="sheet__close" bindtap="onClose">
+      <image class="sheet__close-ico" src="/assets/icons/minus.png" mode="aspectFit" />
+    </view>
+  </view>
+  <view class="sheet__body">
+    <slot></slot>
+  </view>
+  <view class="sheet__safe"></view>
+</view>

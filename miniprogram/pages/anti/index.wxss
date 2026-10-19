@@ -1,0 +1,61 @@
+.head { padding: 14px 12px; }
+.head__n { font-size: 34px; font-weight: 800; color: var(--fire); line-height: 1.1; }
+.head__u { font-size: 14px; font-weight: 800; }
+.head__need { font-size: 10px; color: var(--ink-2); font-weight: 800; }
+
+.tip {
+  margin-top: 8px; padding: 6px 10px;
+  background: #FFF1D0; border: 2px solid var(--wood);
+  border-radius: 8px;
+  font-size: 11px; font-weight: 800; color: var(--ink);
+}
+.tip--soft { background: var(--wheat); color: var(--ink-2); }
+
+.meal { padding: 12px 10px; }
+.grid {
+  display: flex; flex-wrap: wrap;
+  margin-top: 8px;
+}
+.cell {
+  width: 25%;
+  padding: 6px 3px 5px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  border-radius: var(--r-cell);
+  border: 2px solid transparent;
+}
+.cell--on {
+  background: var(--fire);
+  border-color: var(--wood);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .25);
+}
+.cell__ico { width: 26px; height: 26px; }
+.cell__txt {
+  font-size: 9px; font-weight: 800; color: var(--ink-2);
+  margin-top: 3px; text-align: center; line-height: 1.2;
+}
+.cell--on .cell__txt { color: var(--cream); }
+
+.autosave {
+  text-align: center; font-size: 10px; color: var(--wheat);
+  opacity: .8; margin-top: 12px;
+}
+.notice {
+  text-align: center; font-size: 10px; font-weight: 800;
+  color: var(--wheat); opacity: .8; margin-top: 4px;
+}
+
+.pop {
+  position: fixed; left: 0; right: 0; top: 42%;
+  text-align: center;
+  font-size: 40px; font-weight: 800; color: var(--gold);
+  text-shadow: 0 3px 0 var(--wood-d);
+  animation: popUp 900ms linear forwards;
+  pointer-events: none; z-index: 99;
+}
+@keyframes popUp {
+  0%   { opacity: 0; transform: translateY(10px) scale(.8); }
+  25%  { opacity: 1; transform: translateY(0) scale(1.1); }
+  60%  { opacity: 1; transform: translateY(-16px) scale(1); }
+  100% { opacity: 0; transform: translateY(-40px) scale(1); }
+}

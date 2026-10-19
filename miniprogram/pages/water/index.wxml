@@ -1,0 +1,82 @@
+<px-navbar title="大水理论" sub="{{isHistory ? dateLabel + ' · 补记不补分' : ''}}" />
+
+<view class="page page--plain">
+  <!-- slogan 固定条 -->
+  <view class="slogan">
+    <text class="slogan__t">{{slogan}}</text>
+  </view>
+
+  <!-- 木桶 -->
+  <view class="bucket-wrap">
+    <view class="bucket">
+      <view class="bucket__inner">
+        <view class="bucket__water" style="height:{{pct}}%"></view>
+        <view class="bucket__ticks">
+          <view class="bucket__tick"></view>
+          <view class="bucket__tick"></view>
+          <view class="bucket__tick"></view>
+          <view class="bucket__tick"></view>
+        </view>
+        <view class="bucket__level" style="bottom:{{pct}}%">
+          <view class="bucket__level-bar"></view>
+        </view>
+      </view>
+      <view wx:if="{{done}}" class="bucket__crown">
+        <image class="bucket__crown-img" src="/assets/icons/crown.png" mode="aspectFit" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 数值 -->
+  <view class="figure">
+    <text class="figure__main num">{{water}}</text>
+    <text class="figure__unit">升</text>
+    <text class="figure__goal num">/ {{goal}} 升</text>
+  </view>
+
+  <view class="state">
+    <view wx:if="{{done}}" class="state__badge">达标</view>
+    <view wx:else class="state__left">还差 {{diff}} 升</view>
+  </view>
+
+  <!-- 加水 -->
+  <view class="adds">
+    <view class="px-btn add" data-v="0.1" bindtap="onStep">
+      <image class="add__ico" src="/assets/icons/plus.png" mode="aspectFit" />
+      <text>0.1</text>
+    </view>
+    <view class="px-btn add" data-v="0.25" bindtap="onStep">
+      <image class="add__ico" src="/assets/icons/plus.png" mode="aspectFit" />
+      <text>0.25</text>
+    </view>
+    <view class="px-btn add" data-v="0.5" bindtap="onStep">
+      <image class="add__ico" src="/assets/icons/plus.png" mode="aspectFit" />
+      <text>0.5</text>
+    </view>
+  </view>
+
+  <view class="row gap-2 mt-2">
+    <view class="px-btn px-btn--sm grow" bindtap="onUndo">
+      <image class="add__ico" src="/assets/icons/minus.png" mode="aspectFit" />
+      <text style="margin-left:4px">撤销</text>
+    </view>
+    <view class="px-btn px-btn--sm grow" bindtap="onOpenSheet">改总数</view>
+  </view>
+
+  <view class="foot">目标按体重算：{{formulaText}}<br />喝到 {{goal}} 升就是达标，得 10 分</view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onNext">保存，去抗炎 ›</view>
+
+  <view wx:if="{{isHistory}}" class="notice">历史记录 · 补记不给分</view>
+  <view class="safe-bottom"></view>
+</view>
+
+<view wx:if="{{pop}}" class="pop">+10</view>
+
+<px-sheet show="{{showSheet}}" title="今天一共喝了多少升" bind:close="onCloseSheet">
+  <view class="sheet-row">
+    <input class="px-input num grow" type="digit" value="{{tmp}}" bindinput="onTmp" focus="{{showSheet}}" placeholder="例如 1.2" />
+    <text class="sheet-unit">升</text>
+  </view>
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onSaveTotal">保存</view>
+</px-sheet>

@@ -1,0 +1,43 @@
+<px-navbar title="数据与备份" />
+
+<view class="page page--plain">
+  <view class="px-card mt-2">
+    <view class="between">
+      <view>
+        <view class="px-row__title">本地占用</view>
+        <view class="px-row__sub">{{dayCount}} 天记录 · {{pointCount}} 条积分</view>
+      </view>
+      <view class="tag">{{sizeText}}</view>
+    </view>
+    <view class="hr"></view>
+    <view class="between">
+      <view class="px-row__title">上次备份</view>
+      <view class="sub">{{lastBackupText}}</view>
+    </view>
+  </view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onExport">
+    {{busy ? '正在导出…' : '导出备份（推荐）'}}
+  </view>
+  <view class="sub mt-1">生成一个 JSON 文件，转发到「文件传输助手」存起来。</view>
+
+  <view class="px-card mt-3">
+    <view class="h3">从备份恢复</view>
+    <view class="sub mt-1">可以从聊天里选文件，也可以把内容粘贴进来。</view>
+    <view class="px-btn px-btn--sm mt-2" bindtap="onPickFile">从聊天选择文件</view>
+    <textarea class="ta mt-2" value="{{pasteText}}" bindinput="onPaste"
+              placeholder="或者在这里粘贴备份内容…" maxlength="-1" auto-height />
+    <view class="px-btn px-btn--block mt-2" bindtap="onRestore">校验并恢复</view>
+  </view>
+
+  <view class="px-card mt-3">
+    <view class="h3">数据说明</view>
+    <view class="sub mt-2">· 饮水、饮食、睡眠、训练、体重、热量：只存在这台手机上，不上传。</view>
+    <view class="sub">· 云端只存：昵称、头像、每天得分、搭子关系、隐身开关。</view>
+    <view class="sub">· 删小程序或清理微信存储，本地记录会丢，且没有云端副本。</view>
+    <view class="sub">· 恢复是「完全替换」，不做合并。</view>
+  </view>
+
+  <view class="danger" bindtap="onClear">清空所有数据</view>
+  <view class="safe-bottom"></view>
+</view>

@@ -1,0 +1,64 @@
+.score {
+  display: flex; align-items: baseline;
+  background: var(--cream);
+  border: 2px solid var(--wood-d);
+  border-radius: 8px;
+  padding: 2px 7px;
+}
+.score__now { font-size: 14px; font-weight: 800; color: var(--ink); }
+.score__max { font-size: 10px; font-weight: 800; color: var(--ink-2); }
+
+.offline {
+  margin-top: 8px;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--gold);
+  border: 2px solid var(--wood);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 11px; font-weight: 800; color: var(--ink);
+}
+.offline__dot {
+  width: 6px; height: 6px; border-radius: 1px; background: var(--fire);
+}
+
+.card { padding-top: 12px; }
+.card__head { display: flex; align-items: center; }
+.ico24 { width: 28px; height: 28px; }
+.ico24__img { width: 18px; height: 18px; }
+
+.card__num {
+  display: flex; align-items: baseline; gap: 5px;
+  margin: 8px 0 7px;
+}
+.card__main { font-size: 27px; font-weight: 800; line-height: 1.1; }
+.card__sub { font-size: 10px; color: var(--ink-2); font-weight: 800; }
+
+.pair {
+  display: flex; align-items: center;
+  padding: 10px 12px;
+}
+.pair + .pair { margin-top: 8px; }
+.pair__label { font-size: 12px; font-weight: 800; color: var(--ink-2); }
+.pair__val { font-size: 15px; font-weight: 800; color: var(--ink); }
+.pair__pen { width: 14px; height: 14px; margin-left: 6px; opacity: .7; }
+
+.hint {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 11px; font-weight: 800;
+  color: var(--ink-2);
+  padding: 6px 0;
+}
+.hint--gold { color: #8A5A00; }
+.hint--grass { color: #2C6A21; }
+
+.foot {
+  text-align: center;
+  font-size: 9px;
+  color: var(--wheat);
+  opacity: .65;
+  margin-top: 14px;
+}
+
+.sheet-row { display: flex; align-items: center; gap: 8px; }
+.sheet-unit { font-size: 12px; font-weight: 800; color: var(--ink-2); }

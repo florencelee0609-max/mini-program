@@ -1,0 +1,44 @@
+<px-navbar title="目标设定" />
+
+<view class="page page--plain">
+  <view class="px-card mt-2">
+    <view class="sub">{{calcText}}</view>
+  </view>
+
+  <view class="px-card mt-2">
+    <view class="px-field">
+      <view class="px-field__label">每日热量目标（千卡）</view>
+      <input class="px-input num" type="number" value="{{calories}}" data-k="calories" bindinput="onInput" />
+    </view>
+
+    <view class="px-field">
+      <view class="px-field__label">每周力量训练次数</view>
+      <input class="px-input num" type="number" value="{{strength}}" data-k="strength" bindinput="onInput" />
+    </view>
+
+    <view class="px-field">
+      <view class="px-field__label">每周有氧次数</view>
+      <input class="px-input num" type="number" value="{{cardio}}" data-k="cardio" bindinput="onInput" />
+    </view>
+
+    <view class="px-field">
+      <view class="px-field__label">睡眠建议</view>
+      <input class="px-input" value="{{sleepText}}" data-k="sleepText" bindinput="onInput" />
+    </view>
+  </view>
+
+  <view class="px-card mt-2">
+    <view class="between">
+      <view class="grow">
+        <view class="px-row__title">饮水目标</view>
+        <view class="px-row__sub">体重 × 32.5 毫升 · 喝到这个数就达标计分</view>
+      </view>
+      <view class="tag tag--water">{{waterGoal}} 升</view>
+    </view>
+  </view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-4" bindtap="onSave">保存</view>
+  <view class="px-btn px-btn--block mt-2" bindtap="onReset">恢复系统算出的值</view>
+  <view class="sub center mt-2">所有目标都是起点，不是命令</view>
+  <view class="safe-bottom"></view>
+</view>

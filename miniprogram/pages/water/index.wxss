@@ -1,0 +1,109 @@
+.slogan {
+  margin-top: 8px;
+  background: var(--wood-d);
+  border: 3px solid var(--wood);
+  border-radius: 10px;
+  padding: 7px 0;
+  text-align: center;
+}
+.slogan__t {
+  font-size: 12px; font-weight: 800; letter-spacing: 2px;
+  color: var(--gold);
+}
+
+.bucket-wrap {
+  display: flex; justify-content: center;
+  margin-top: 16px;
+}
+.bucket { width: 132px; height: 190px; position: relative; }
+.bucket__inner {
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+  border: 4px solid var(--wood-d);
+  border-radius: 14px;
+  background: var(--wheat);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2px var(--ring), 0 5px 0 rgba(0, 0, 0, .28);
+}
+.bucket__water {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: var(--water);
+  transition: height 200ms linear;
+}
+.bucket__water::after {
+  content: '';
+  position: absolute; left: 0; right: 0; top: 0; height: 4px;
+  background: #6FB6E6;
+}
+.bucket__ticks {
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 18px 0;
+}
+.bucket__tick { height: 2px; background: rgba(62, 36, 16, .22); margin: 0 10px; }
+.bucket__level {
+  position: absolute; left: -6px; right: -6px; height: 0;
+  transition: bottom 200ms linear;
+}
+.bucket__level-bar {
+  height: 5px; background: var(--ink); border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+.bucket__crown {
+  position: absolute; top: -22px; left: 50%; margin-left: -9px;
+  width: 18px; height: 18px;
+  animation: crownIn 240ms linear;
+}
+.bucket__crown-img { width: 18px; height: 18px; }
+@keyframes crownIn {
+  from { transform: translateY(6px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.figure {
+  display: flex; align-items: baseline; justify-content: center;
+  gap: 5px; margin-top: 14px;
+}
+.figure__main { font-size: 40px; font-weight: 800; color: var(--water); line-height: 1.05; }
+.figure__unit { font-size: 14px; font-weight: 800; color: var(--ink); }
+.figure__goal { font-size: 11px; font-weight: 800; color: var(--ink-2); margin-left: 2px; }
+
+.state { display: flex; justify-content: center; margin-top: 6px; height: 26px; }
+.state__badge {
+  padding: 2px 12px; border-radius: 7px;
+  background: var(--ink); color: var(--cream);
+  font-size: 12px; font-weight: 800; letter-spacing: 1px;
+}
+.state__left {
+  padding: 2px 12px; border-radius: 7px;
+  border: 2px solid var(--wood); background: var(--cream);
+  font-size: 12px; font-weight: 800; color: var(--fire);
+}
+
+.adds { display: flex; gap: 8px; margin-top: 14px; }
+.add { flex: 1; height: 46px; gap: 3px; font-size: 14px; }
+.add__ico { width: 13px; height: 13px; }
+
+.notice {
+  margin-top: 12px; text-align: center;
+  font-size: 10px; font-weight: 800; color: var(--wheat); opacity: .8;
+}
+
+.pop {
+  position: fixed; left: 0; right: 0; top: 42%;
+  text-align: center;
+  font-size: 40px; font-weight: 800; color: var(--gold);
+  text-shadow: 0 3px 0 var(--wood-d);
+  animation: popUp 900ms linear forwards;
+  pointer-events: none;
+  z-index: 99;
+}
+@keyframes popUp {
+  0%   { opacity: 0; transform: translateY(10px) scale(.8); }
+  25%  { opacity: 1; transform: translateY(0) scale(1.1); }
+  60%  { opacity: 1; transform: translateY(-16px) scale(1); }
+  100% { opacity: 0; transform: translateY(-40px) scale(1); }
+}
+
+.sheet-row { display: flex; align-items: center; gap: 8px; }
+.sheet-unit { font-size: 12px; font-weight: 800; color: var(--ink-2); }

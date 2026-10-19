@@ -1,0 +1,20 @@
+.ta {
+  width: 100%;
+  min-height: 88px;
+  padding: 10px;
+  border: 3px solid var(--wood);
+  border-radius: var(--r-btn);
+  background: var(--wheat);
+  font-size: 11px;
+  color: var(--ink);
+  box-sizing: border-box;
+}
+
+.danger {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #FFD9CF;
+  padding: 10px;
+}

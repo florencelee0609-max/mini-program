@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>大理论时代 · 小程序界面渲染预览</title>
+<style>
+  :root{
+    --wood-d:#4A2E18; --wood:#5E3C22; --wood-l:#8B5E3C;
+    --wheat:#F7E3BC; --cream:#FFF9E8; --ring:#E8C68C;
+    --ink:#3E2410; --ink-2:#7C5836;
+    --water:#3C97D4; --fire:#D9542B; --night:#7B5EA7; --grass:#4FA83D; --gold:#FFC845;
+    --r-card:12px; --r-btn:11px; --r-cell:9px; --bw:3px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#2A1B10; padding:28px 0 60px;
+    font-family:"Varela Round","Nunito","PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--ink); display:flex; gap:22px; flex-wrap:wrap; justify-content:center;
+  }
+  .phone{
+    width:375px; height:812px; border-radius:34px; overflow:hidden; position:relative;
+    border:8px solid #1A1108; box-shadow:0 16px 40px rgba(0,0,0,.55);
+    background:var(--wood-l);
+    background-image:repeating-linear-gradient(180deg,
+      rgba(0,0,0,.045) 0px,rgba(0,0,0,.045) 2px,
+      rgba(255,255,255,.035) 2px,rgba(255,255,255,.035) 6px);
+  }
+  .cap{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;color:#F7E3BC;opacity:.55}
+  .nav{background:var(--wood);border-bottom:3px solid var(--wood-d);}
+  .nav__bar{height:46px;display:flex;align-items:center;padding:0 10px;margin-top:44px}
+  .nav__side{width:56px}
+  .nav__mid{flex:1;text-align:center}
+  .nav__title{font-size:15px;font-weight:800;color:var(--cream);letter-spacing:.5px}
+  .nav__sub{font-size:9px;color:var(--wheat);opacity:.8}
+  .score{display:flex;align-items:baseline;background:var(--cream);border:2px solid var(--wood-d);border-radius:8px;padding:2px 7px;justify-content:center}
+  .score__now{font-size:14px;font-weight:800}
+  .score__max{font-size:10px;font-weight:800;color:var(--ink-2)}
+
+  .page{padding:0 14px 84px}
+  .px-card{position:relative;background:var(--cream);border:3px solid var(--wood);border-radius:12px;
+    box-shadow:inset 0 0 0 2px var(--ring),0 4px 0 rgba(0,0,0,.28);padding:12px;overflow:hidden}
+  .px-card + .px-card{margin-top:10px}
+  .px-card__accent{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--wood)}
+  .c-water .px-card__accent{background:var(--water)}
+  .c-fire .px-card__accent{background:var(--fire)}
+  .c-night .px-card__accent{background:var(--night)}
+  .c-grass .px-card__accent{background:var(--grass)}
+  .c-gold .px-card__accent{background:var(--gold)}
+  .h3{font-size:13px;font-weight:800}
+  .sub{font-size:10px;color:var(--ink-2);line-height:1.6}
+  .row{display:flex;align-items:center}.between{display:flex;align-items:center;justify-content:space-between}
+  .grow{flex:1}.gap-1{gap:4px}.gap-2{gap:8px}.mt-1{margin-top:4px}.mt-2{margin-top:8px}.mt-3{margin-top:12px}
+  .tag{display:inline-flex;align-items:center;padding:1px 7px;border-radius:7px;font-size:10px;font-weight:800;border:2px solid var(--wood);background:var(--cream)}
+  .tag--on{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+  .px-ico{display:flex;align-items:center;justify-content:center;border-radius:7px;border:2px solid var(--wood);flex:none}
+  .i-water{background:var(--water)}.i-fire{background:var(--fire)}.i-night{background:var(--night)}.i-grass{background:var(--grass)}
+  .px-ico img{width:18px;height:18px;image-rendering:pixelated}
+  .card__head{display:flex;align-items:center}
+  .card__num{display:flex;align-items:baseline;gap:5px;margin:8px 0 7px}
+  .card__main{font-size:27px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+  .card__sub{font-size:10px;color:var(--ink-2);font-weight:800}
+  .px-progress{display:flex;align-items:center;gap:2px;height:12px}
+  .px-progress__cell{flex:1;height:12px;border-radius:3px;background:var(--ring);border:1px solid rgba(94,60,34,.35)}
+  .on-water{background:var(--water);border-color:var(--wood)}
+  .on-fire{background:var(--fire);border-color:var(--wood)}
+  .on-night{background:var(--night);border-color:var(--wood)}
+  .on-grass{background:var(--grass);border-color:var(--wood)}
+  .pair{display:flex;align-items:center;padding:10px 12px}
+  .pair__label{font-size:12px;font-weight:800;color:var(--ink-2)}
+  .pair__val{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+  .hint{margin-top:10px;text-align:center;font-size:11px;font-weight:800;color:#8A5A00}
+  .foot{text-align:center;font-size:9px;color:var(--wheat);opacity:.65;margin-top:14px}
+  .float10{position:absolute;right:10px;top:8px;font-size:13px;font-weight:800;color:var(--grass)}
+  .tabbar{position:absolute;left:0;right:0;bottom:0;background:var(--cream);border-top:3px solid var(--wood);box-shadow:inset 0 3px 0 var(--ring)}
+  .tb{display:flex;height:54px}
+  .tb__item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:4px 3px;border-radius:9px}
+  .tb__item.on{background:var(--ink)}
+  .tb__item img{width:20px;height:20px;image-rendering:pixelated}
+  .tb__item span{font-size:10px;font-weight:800;color:var(--ink-2)}
+  .tb__item.on span{color:var(--cream)}
+</style>
+</head>
+<body>
+
+<!-- ================= 今日 ================= -->
+<div class="phone">
+  <div class="nav">
+    <div class="nav__bar">
+      <div class="nav__side"></div>
+      <div class="nav__mid">
+        <div class="nav__title">今日</div>
+        <div class="nav__sub">今天 · 10月19日</div>
+      </div>
+      <div class="nav__side"><div class="score"><span class="score__now">30</span><span class="score__max">/40</span></div></div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="px-card c-water" style="margin-top:8px">
+      <div class="px-card__accent"></div>
+      <div class="card__head">
+        <div class="px-ico i-water" style="width:28px;height:28px"><img src="miniprogram/assets/icons/water-w.png"></div>
+        <div class="grow" style="margin-left:8px"><div class="h3">大水理论</div></div>
+        <div class="tag tag--on">达标</div>
+        <div class="float10">+10</div>
+      </div>
+      <div class="card__num"><span class="card__main" style="color:var(--water)">1.5</span><span class="card__sub">升 / 1.5 升</span></div>
+      <div class="px-progress">
+        <div class="px-progress__cell on-water"></div><div class="px-progress__cell on-water"></div>
+        <div class="px-progress__cell on-water"></div><div class="px-progress__cell on-water"></div>
+        <div class="px-progress__cell on-water"></div><div class="px-progress__cell on-water"></div>
+        <div class="px-progress__cell on-water"></div><div class="px-progress__cell on-water"></div>
+        <div class="px-progress__cell on-water"></div><div class="px-progress__cell on-water"></div>
+      </div>
+    </div>
+
+    <div class="px-card c-fire" style="margin-top:8px">
+      <div class="px-card__accent"></div>
+      <div class="card__head">
+        <div class="px-ico i-fire" style="width:28px;height:28px"><img src="miniprogram/assets/icons/fire-w.png"></div>
+        <div class="grow" style="margin-left:8px"><div class="h3">抗炎理论</div></div>
+        <div class="tag tag--on">合格</div>
+      </div>
+      <div class="card__num"><span class="card__main" style="color:var(--fire)">4</span><span class="card__sub">类 / 8 类</span></div>
+      <div class="px-progress">
+        <div class="px-progress__cell on-fire"></div><div class="px-progress__cell on-fire"></div>
+        <div class="px-progress__cell on-fire"></div><div class="px-progress__cell on-fire"></div>
+        <div class="px-progress__cell on-fire"></div><div class="px-progress__cell"></div>
+        <div class="px-progress__cell"></div><div class="px-progress__cell"></div>
+        <div class="px-progress__cell"></div><div class="px-progress__cell"></div>
+      </div>
+    </div>
+
+    <div class="px-card c-night" style="margin-top:8px">
+      <div class="px-card__accent"></div>
+      <div class="card__head">
+        <div class="px-ico i-night" style="width:28px;height:28px"><img src="miniprogram/assets/icons/moon-w.png"></div>
+        <div class="grow" style="margin-left:8px"><div class="h3">大睡理论</div></div>
+        <div class="tag tag--on">良</div>
+      </div>
+      <div class="card__num"><span class="card__main" style="color:var(--night)">7时30分</span><span class="card__sub">昨晚</span></div>
+      <div class="px-progress">
+        <div class="px-progress__cell on-night"></div><div class="px-progress__cell on-night"></div>
+        <div class="px-progress__cell on-night"></div><div class="px-progress__cell on-night"></div>
+        <div class="px-progress__cell on-night"></div><div class="px-progress__cell on-night"></div>
+        <div class="px-progress__cell on-night"></div><div class="px-progress__cell on-night"></div>
+        <div class="px-progress__cell on-night"></div><div class="px-progress__cell"></div>
+      </div>
+    </div>
+
+    <div class="px-card c-grass" style="margin-top:8px">
+      <div class="px-card__accent"></div>
+      <div class="card__head">
+        <div class="px-ico i-grass" style="width:28px;height:28px"><img src="miniprogram/assets/icons/muscle-w.png"></div>
+        <div class="grow" style="margin-left:8px"><div class="h3">薄肌理论</div></div>
+        <div class="tag">未练</div>
+      </div>
+      <div class="card__num"><span class="card__main" style="color:var(--grass)">2/3</span><span class="card__sub">次 · 本周</span></div>
+      <div class="px-progress">
+        <div class="px-progress__cell on-grass"></div><div class="px-progress__cell on-grass"></div>
+        <div class="px-progress__cell on-grass"></div><div class="px-progress__cell on-grass"></div>
+        <div class="px-progress__cell on-grass"></div><div class="px-progress__cell on-grass"></div>
+        <div class="px-progress__cell on-grass"></div><div class="px-progress__cell"></div>
+        <div class="px-progress__cell"></div><div class="px-progress__cell"></div>
+      </div>
+    </div>
+
+    <div class="px-card pair" style="margin-top:8px">
+      <div class="pair__label">体重</div><div class="grow"></div>
+      <div class="pair__val">67.8 kg</div>
+    </div>
+    <div class="px-card pair" style="margin-top:8px">
+      <div class="pair__label">热量</div><div class="grow"></div>
+      <div class="pair__val">2380 千卡</div>
+    </div>
+
+    <div class="hint">只差薄肌了</div>
+    <div class="foot">四项各 10 分 · 每天最多 40 分</div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tb">
+      <div class="tb__item on"><img src="miniprogram/assets/icons/home-w.png"><span>今日</span></div>
+      <div class="tb__item"><img src="miniprogram/assets/icons/chart.png"><span>趋势</span></div>
+      <div class="tb__item"><img src="miniprogram/assets/icons/trophy.png"><span>榜单</span></div>
+      <div class="tb__item"><img src="miniprogram/assets/icons/user.png"><span>我的</span></div>
+    </div>
+  </div>
+  <div class="cap">今日（实际 WXML 渲染的 CSS 复刻）</div>
+</div>
+
+<!-- ================= 大水 ================= -->
+<div class="phone">
+  <div class="nav">
+    <div class="nav__bar">
+      <div class="nav__side" style="display:flex;align-items:center"><img src="miniprogram/assets/icons/back-w.png" style="width:18px;height:18px;image-rendering:pixelated"></div>
+      <div class="nav__mid"><div class="nav__title">大水理论</div></div>
+      <div class="nav__side"></div>
+    </div>
+  </div>
+  <div class="page" style="padding-bottom:24px">
+    <div style="margin-top:8px;background:var(--wood-d);border:3px solid var(--wood);border-radius:10px;padding:7px 0;text-align:center">
+      <span style="font-size:12px;font-weight:800;letter-spacing:2px;color:var(--gold)">弱者喝饮料，强者喝大水</span>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:16px">
+      <div style="width:132px;height:190px;position:relative">
+        <div style="position:absolute;inset:0;border:4px solid var(--wood-d);border-radius:14px;background:var(--wheat);overflow:hidden;box-shadow:inset 0 0 0 2px var(--ring),0 5px 0 rgba(0,0,0,.28)">
+          <div style="position:absolute;left:0;right:0;bottom:0;height:80%;background:var(--water)"></div>
+          <div style="position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;padding:18px 0">
+            <div style="height:2px;margin:0 10px;background:rgba(62,36,16,.22)"></div>
+            <div style="height:2px;margin:0 10px;background:rgba(62,36,16,.22)"></div>
+            <div style="height:2px;margin:0 10px;background:rgba(62,36,16,.22)"></div>
+            <div style="height:2px;margin:0 10px;background:rgba(62,36,16,.22)"></div>
+          </div>
+          <div style="position:absolute;left:-6px;right:-6px;bottom:80%;height:5px;background:var(--ink);border-radius:2px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:baseline;justify-content:center;gap:5px;margin-top:14px">
+      <span style="font-size:40px;font-weight:800;color:var(--water);line-height:1.05;font-variant-numeric:tabular-nums">1.2</span>
+      <span style="font-size:14px;font-weight:800">升</span>
+      <span style="font-size:11px;font-weight:800;color:var(--ink-2)">/ 1.5 升</span>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:6px">
+      <span style="padding:2px 12px;border-radius:7px;border:2px solid var(--wood);background:var(--cream);font-size:12px;font-weight:800;color:var(--fire)">还差 0.3 升</span>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <div style="flex:1;height:46px;display:flex;align-items:center;justify-content:center;gap:3px;background:var(--cream);border:3px solid var(--wood);border-radius:11px;box-shadow:0 4px 0 rgba(0,0,0,.3);font-size:14px;font-weight:800">+ 0.1</div>
+      <div style="flex:1;height:46px;display:flex;align-items:center;justify-content:center;gap:3px;background:var(--cream);border:3px solid var(--wood);border-radius:11px;box-shadow:0 4px 0 rgba(0,0,0,.3);font-size:14px;font-weight:800">+ 0.25</div>
+      <div style="flex:1;height:46px;display:flex;align-items:center;justify-content:center;gap:3px;background:var(--cream);border:3px solid var(--wood);border-radius:11px;box-shadow:0 4px 0 rgba(0,0,0,.3);font-size:14px;font-weight:800">+ 0.5</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <div style="flex:1;height:34px;display:flex;align-items:center;justify-content:center;background:var(--cream);border:3px solid var(--wood);border-radius:9px;font-size:12px;font-weight:800">撤销</div>
+      <div style="flex:1;height:34px;display:flex;align-items:center;justify-content:center;background:var(--cream);border:3px solid var(--wood);border-radius:9px;font-size:12px;font-weight:800">改总数</div>
+    </div>
+  </div>
+  <div class="cap">大水（木桶 / 水位 / 判定）</div>
+</div>
+
+<!-- ================= 抗炎 ================= -->
+<div class="phone">
+  <div class="nav">
+    <div class="nav__bar">
+      <div class="nav__side" style="display:flex;align-items:center"><img src="miniprogram/assets/icons/back-w.png" style="width:18px;height:18px;image-rendering:pixelated"></div>
+      <div class="nav__mid"><div class="nav__title">抗炎理论</div></div>
+      <div class="nav__side"></div>
+    </div>
+  </div>
+  <div class="page" style="padding-bottom:24px">
+    <div class="px-card" style="margin-top:8px;padding:14px 12px">
+      <div class="between">
+        <div>
+          <div class="row gap-1" style="align-items:baseline">
+            <span style="font-size:34px;font-weight:800;color:var(--fire);line-height:1.1;font-variant-numeric:tabular-nums">4</span>
+            <span style="font-size:14px;font-weight:800">类</span>
+            <span style="font-size:10px;color:var(--ink-2);font-weight:800">/ 今天吃到的类别</span>
+          </div>
+          <div class="sub">3 类及以上算合格</div>
+        </div>
+        <div class="tag tag--on">合格</div>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;padding:6px 10px;background:#FFF1D0;border:2px solid var(--wood);border-radius:8px;font-size:11px;font-weight:800">今天 2 项，再补 1 项就合格了</div>
+
+    <div class="px-card c-fire" style="margin-top:8px;padding:12px 10px">
+      <div class="px-card__accent"></div>
+      <div class="between"><div class="h3">早餐</div><div class="sub">2 项</div></div>
+      <div style="display:flex;flex-wrap:wrap;margin-top:8px">
+        <div style="width:25%;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center;background:var(--fire);border:2px solid var(--wood);border-radius:9px">
+          <img src="miniprogram/assets/icons/berry-w.png" style="width:26px;height:26px;image-rendering:pixelated">
+          <span style="font-size:9px;font-weight:800;color:var(--cream);margin-top:3px">莓果类</span>
+        </div>
+        <div style="width:25%;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center;background:var(--fire);border:2px solid var(--wood);border-radius:9px">
+          <img src="miniprogram/assets/icons/leafy-w.png" style="width:26px;height:26px;image-rendering:pixelated">
+          <span style="font-size:9px;font-weight:800;color:var(--cream);margin-top:3px">绿叶蔬菜</span>
+        </div>
+        <div style="width:25%;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center">
+          <img src="miniprogram/assets/icons/fish.png" style="width:26px;height:26px;image-rendering:pixelated">
+          <span style="font-size:9px;font-weight:800;color:var(--ink-2);margin-top:3px">深海鱼类</span>
+        </div>
+        <div style="width:25%;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center">
+          <img src="miniprogram/assets/icons/nuts.png" style="width:26px;height:26px;image-rendering:pixelated">
+          <span style="font-size:9px;font-weight:800;color:var(--ink-2);margin-top:3px">坚果种子</span>
+        </div>
+        <div style="width:25%;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center">
+          <img src="miniprogram/assets/icons/oil.png" style="width:26px;height:26px;image-rendering:pixelated">
+          <span style="font-size:9px;font-weight:800;color:var(--ink-2);margin-top:3px">橄榄油</span>
+        </div>
+        <div style="width:25%;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center">
+          <img src="miniprogram/assets/icons/spice.png" style="width:26px;height:26px;image-rendering:pixelated">
+          <span style="font-size:9px;font-weight:800;color:var(--ink-2);margin-top:3px">天然香料</span>
+        </div>
+        <div style="width:25%;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center">
+          <img src="miniprogram/assets/icons/protein.png" style="width:26px;height:26px;image-rendering:pixelated">
+          <span style="font-size:9px;font-weight:800;color:var(--ink-2);margin-top:3px">优质蛋白</span>
+        </div>
+        <div style="width:25%;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center">
+          <img src="miniprogram/assets/icons/fruitvc.png" style="width:26px;height:26px;image-rendering=pixelated">
+          <span style="font-size:9px;font-weight:800;color:var(--ink-2);margin-top:3px">富含VC水果</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:10px;color:var(--wheat);opacity:.8;margin-top:12px">自动保存 · 16:20 已保存</div>
+  </div>
+  <div class="cap">抗炎（三餐 × 8 类，格子可多选）</div>
+</div>
+
+</body>
+</html>

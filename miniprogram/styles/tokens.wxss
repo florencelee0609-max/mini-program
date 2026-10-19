@@ -1,0 +1,32 @@
+/* ============ 设计变量（唯一定义处，改色只改这里） ============ */
+page {
+  /* 木与纸 */
+  --wood-d: #4A2E18;
+  --wood: #5E3C22;
+  --wood-l: #8B5E3C;
+  --wheat: #F7E3BC;
+  --cream: #FFF9E8;
+  --ring: #E8C68C;
+  /* 墨 */
+  --ink: #3E2410;
+  --ink-2: #7C5836;
+  /* 板块色 */
+  --water: #3C97D4;
+  --fire: #D9542B;
+  --night: #7B5EA7;
+  --grass: #4FA83D;
+  --gold: #FFC845;
+  /* 形状 */
+  --r-card: 12px;
+  --r-btn: 11px;
+  --r-cell: 9px;
+  --r-tag: 7px;
+  --bw: 3px;
+  /* 间距（4px 栅格） */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+}

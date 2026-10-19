@@ -1,0 +1,21 @@
+.tb {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+  background: #FFF9E8;
+  border-top: 3px solid #5E3C22;
+  box-shadow: inset 0 3px 0 #E8C68C;
+}
+.tb__inner { display: flex; height: 54px; }
+.tb__item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px;
+  margin: 4px 3px;
+  border-radius: 9px;
+  transition: transform 60ms linear;
+}
+.tb__item--on { background: #3E2410; }
+.tb__item:active { transform: translateY(1px); }
+.tb__ico { width: 20px; height: 20px; }
+.tb__txt { font-size: 10px; font-weight: 800; color: #7C5836; }
+.tb__item--on .tb__txt { color: #FFF9E8; }
+.tb__safe { height: env(safe-area-inset-bottom); }

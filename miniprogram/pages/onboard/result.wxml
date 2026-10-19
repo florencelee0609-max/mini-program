@@ -1,0 +1,78 @@
+<px-navbar title="你的目标" sub="第 3 步 / 共 3 步" />
+
+<view class="page page--plain">
+  <view class="px-card px-card--gold mt-3">
+    <view class="px-card__accent"></view>
+    <view class="h3">按你的数据算出来的起点</view>
+    <view class="sub mt-1">公式估算，不是医疗建议。全部可以改。</view>
+  </view>
+
+  <view class="px-card px-card--fire mt-2">
+    <view class="px-card__accent"></view>
+    <view class="between">
+      <view class="grow">
+        <view class="sub">每日热量</view>
+        <view class="row gap-1" style="align-items:baseline">
+          <text class="big num" style="color:var(--fire)">{{targets.calories}}</text>
+          <text class="sub">千卡</text>
+        </view>
+      </view>
+      <view class="tag">维持体重</view>
+    </view>
+  </view>
+
+  <view class="px-card px-card--water mt-2">
+    <view class="px-card__accent"></view>
+    <view class="between">
+      <view class="grow">
+        <view class="sub">每日饮水 · 达标线</view>
+        <view class="row gap-1" style="align-items:baseline">
+          <text class="big num" style="color:var(--water)">{{targets.waterGoalL}}</text>
+          <text class="sub">升</text>
+        </view>
+        <view class="sub">按体重 × 32.5 毫升算，喝到这个数就达标</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="px-card px-card--grass mt-2">
+    <view class="px-card__accent"></view>
+    <view class="between">
+      <view class="grow">
+        <view class="sub">运动建议</view>
+        <view class="h2">每周 {{targets.strengthPerWeek}} 次力量 + {{targets.cardioPerWeek}} 次有氧</view>
+        <view class="sub mt-1">推 / 拉 / 蹲 三类动作轮着练</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="px-card px-card--night mt-2">
+    <view class="px-card__accent"></view>
+    <view class="between">
+      <view class="grow">
+        <view class="sub">睡眠建议</view>
+        <view class="h2">{{targets.sleepText}}</view>
+        <view class="sub mt-1">睡够时长 + 自评，就算完成</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="px-card mt-3">
+    <view class="h3">榜上怎么称呼你</view>
+    <view class="sub mt-1">只有你邀请的搭子能看到，不填就叫「神秘大理论家」。</view>
+    <input class="px-input mt-2" maxlength="12" value="{{nickname}}" bindinput="onNick"
+           placeholder="输入昵称（可跳过）" />
+    <view class="sub mt-3">选个头像</view>
+    <view class="avatars mt-1">
+      <view wx:for="{{avatars}}" wx:key="*this"
+            class="avatar {{avatarKey === item ? 'avatar--on' : ''}}"
+            data-k="{{item}}" bindtap="onAvatar">
+        <image class="avatar__img" src="/assets/avatar/{{item}}.png" mode="aspectFit" />
+      </view>
+    </view>
+  </view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-4" bindtap="onStart">开始大理论时代</view>
+  <view class="sub center mt-2">以上都是起点，不是命令</view>
+  <view class="safe-bottom"></view>
+</view>

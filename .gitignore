@@ -1,0 +1,30 @@
+# 微信开发者工具
+project.private.config.json
+miniprogram_npm/
+
+# 依赖
+node_modules/
+cloudfunctions/**/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# 日志与临时文件
+*.log
+npm-debug.log*
+*.tmp
+dist/
+
+# 本工程智能体的本地工作数据（不参与代码版本管理）
+.workbuddy/

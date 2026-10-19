@@ -1,0 +1,23 @@
+<px-navbar title="想练成什么样" sub="第 2 步 / 共 3 步" />
+
+<view class="page page--plain">
+  <view class="px-card mt-3">
+    <view class="h3">选一个最接近的</view>
+    <view class="sub mt-1">选完之后所有目标都还能在「我的」里手动改。</view>
+  </view>
+
+  <view wx:for="{{shapes}}" wx:key="key"
+        class="px-card px-card--tap shape {{bodyGoal === item.key ? 'shape--on' : ''}}"
+        data-k="{{item.key}}" bindtap="onPick">
+    <view class="between">
+      <view class="grow">
+        <view class="h2">{{item.label}}</view>
+        <view class="sub mt-1">{{item.sub}}</view>
+      </view>
+      <view class="tag {{bodyGoal === item.key ? 'tag--on' : ''}}">{{item.tag}}</view>
+    </view>
+  </view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-4 {{bodyGoal ? '' : 'px-btn--disabled'}}" bindtap="onNext">下一步</view>
+  <view class="safe-bottom"></view>
+</view>

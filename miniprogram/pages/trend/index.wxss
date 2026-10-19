@@ -1,0 +1,30 @@
+.stats { display: flex; gap: 8px; }
+.stat { flex: 1; padding: 10px 8px; text-align: center; }
+.stat + .stat { margin-top: 0; }
+.stat__n { font-size: 24px; font-weight: 800; line-height: 1.2; }
+.stat__l { font-size: 9px; font-weight: 800; color: var(--ink-2); }
+
+.empty {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 2px dashed var(--wood);
+  border-radius: 8px;
+  background: rgba(255, 249, 232, .55);
+  font-size: 10px; font-weight: 800; color: var(--ink-2);
+  text-align: center;
+}
+
+.chartCard { margin-top: 10px; }
+.h3sub { font-size: 9px; color: var(--ink-2); font-weight: 800; margin-left: 6px; }
+.cv { width: 100%; height: 132px; margin-top: 6px; }
+
+.dots { display: flex; gap: 4px; }
+.dot {
+  width: 10px; height: 10px; border-radius: 3px;
+  background: var(--ring);
+  border: 1px solid rgba(94, 60, 34, .4);
+}
+.dot--on.dot--water { background: var(--water); }
+.dot--on.dot--fire { background: var(--fire); }
+.dot--on.dot--night { background: var(--night); }
+.dot--on.dot--grass { background: var(--grass); }

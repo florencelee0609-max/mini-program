@@ -1,0 +1,114 @@
+<px-navbar title="薄肌理论" sub="{{isHistory ? dateLabel + ' · 补记不补分' : ''}}" />
+
+<view class="page page--plain">
+  <!-- 目标卡 -->
+  <view class="px-card px-card--grass mt-2">
+    <view class="px-card__accent"></view>
+    <view class="between">
+      <view class="h3">我的目标</view>
+      <view class="tag" bindtap="onFreq">改频率</view>
+    </view>
+    <view class="h2 mt-1">体重 {{targetWeightText}}</view>
+    <view class="sub">每周 {{weekTarget}} 次力量训练</view>
+    <view class="row gap-2 mt-2" style="align-items:center">
+      <view class="px-progress px-progress--grass grow">
+        <view wx:for="{{weekCells}}" wx:for-item="c" wx:for-index="ci" wx:key="*this"
+              class="px-progress__cell {{ci < weekN ? 'px-progress__cell--on' : ''}}"></view>
+      </view>
+      <text class="weekNum num">{{weekN}}/{{weekTarget}}</text>
+    </view>
+    <view class="sub mt-1">积分按天给，进度按周算——练一次就 +10，周目标是节奏。</view>
+  </view>
+
+  <!-- 动作库 -->
+  <view class="px-seg mt-3">
+    <view wx:for="{{tabs}}" wx:key="key"
+          class="px-seg__item {{tab === item.key ? 'px-seg__item--on' : ''}}"
+          data-k="{{item.key}}" bindtap="onTab">{{item.label}}</view>
+  </view>
+
+  <view class="px-card mt-2">
+    <block wx:if="{{lib.length > 0}}">
+      <view wx:for="{{lib}}" wx:key="name" class="px-row">
+        <view class="grow">
+          <view class="px-row__title">{{item.name}}</view>
+          <view class="px-row__sub">{{item.tip}}</view>
+        </view>
+        <view class="px-btn px-btn--sm" data-name="{{item.name}}" data-sets="{{item.sets}}" data-reps="{{item.reps}}" bindtap="onRecord">记录</view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="center sub" style="padding:10px 0">还没有自定义项目</view>
+    </block>
+    <view class="px-btn px-btn--sm mt-2" bindtap="onCustomAdd">+ 自定义项目</view>
+  </view>
+
+  <!-- 今日记录 -->
+  <view class="px-card mt-2">
+    <view class="between">
+      <view class="h3">今天练了什么</view>
+      <view class="sub">{{records.length}} 条</view>
+    </view>
+    <block wx:if="{{records.length > 0}}">
+      <view wx:for="{{records}}" wx:key="id" class="px-row">
+        <view class="inten inten--{{item.intensity}}"></view>
+        <view class="grow" style="margin-left:8px">
+          <view class="px-row__title">{{item.name}}</view>
+          <view class="px-row__sub">{{item.sets ? item.sets + ' 组 × ' + item.reps + ' 次 · ' : ''}}{{item.minutes}} 分钟 · {{item.intensity === 'easy' ? '轻松' : (item.intensity === 'mid' ? '适中' : '力竭')}}{{item.note ? ' · ' + item.note : ''}}</view>
+        </view>
+        <view class="del" data-id="{{item.id}}" bindtap="onDelete">删除</view>
+      </view>
+    </block>
+    <view wx:else class="center sub" style="padding:10px 0">今天还没练，练完记一条</view>
+  </view>
+
+  <view class="foot">当天有训练记录就得 10 分<br />一周练满 {{weekTarget}} 次是本周期目标，不要求每天都练</view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onNext">保存，回今日 ›</view>
+
+  <view wx:if="{{isHistory}}" class="notice">历史记录 · 补记不给分</view>
+  <view class="safe-bottom"></view>
+</view>
+
+<view wx:if="{{pop}}" class="pop">+10</view>
+
+<px-sheet show="{{sheet}}" title="{{sheetTitle}}" bind:close="closeSheet">
+  <block wx:if="{{sheetMode === 'record'}}">
+    <view wx:if="{{planText}}" class="sub" style="margin-bottom:8px">
+      {{planText}} · 练完记得记时长
+    </view>
+    <view class="sub">时长（分钟）</view>
+    <input class="px-input num mt-1" type="number" value="{{fMinutes}}" bindinput="onMinutes" focus="{{sheet}}" />
+    <view class="sub mt-3">强度</view>
+    <view class="row gap-2 mt-1">
+      <view wx:for="{{intensities}}" wx:key="key"
+            class="opt {{fIntensity === item.key ? 'opt--on' : ''}}"
+            data-k="{{item.key}}" bindtap="onIntensity">{{item.label}}</view>
+    </view>
+    <view class="sub mt-3">备注（可选）</view>
+    <input class="px-input mt-1" maxlength="20" value="{{fNote}}" bindinput="onNote" placeholder="例如 腿举 80kg" />
+  </block>
+
+  <block wx:if="{{sheetMode === 'custom'}}">
+    <view class="sub">项目名称</view>
+    <input class="px-input mt-1" maxlength="12" value="{{fName}}" bindinput="onName" focus="{{sheet}}" placeholder="例如 壶铃摇摆" />
+    <view class="row gap-2 mt-3">
+      <view class="grow">
+        <view class="sub">做几组</view>
+        <input class="px-input num mt-1" type="number" value="{{fSets}}" bindinput="onSets" />
+      </view>
+      <view class="grow">
+        <view class="sub">每组几次</view>
+        <input class="px-input num mt-1" type="number" value="{{fReps}}" bindinput="onReps" />
+      </view>
+    </view>
+    <view class="sub mt-2">会显示成「3 组 × 12 次」，记录时按这个做</view>
+  </block>
+
+  <block wx:if="{{sheetMode === 'freq'}}">
+    <view class="sub">每周力量训练次数（1–7）</view>
+    <input class="px-input num mt-1" type="number" value="{{fFreq}}" bindinput="onFreqInput" focus="{{sheet}}" />
+  </block>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onSave">保存</view>
+</px-sheet>

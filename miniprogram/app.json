@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/splash/index",
+    "pages/home/index",
+    "pages/onboard/profile",
+    "pages/onboard/shape",
+    "pages/onboard/result",
+    "pages/water/index",
+    "pages/anti/index",
+    "pages/sleep/index",
+    "pages/muscle/index",
+    "pages/trend/index",
+    "pages/rank/index",
+    "pages/me/index",
+    "pages/me-goal/index",
+    "pages/me-data/index"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#8B5E3C",
+    "backgroundTextStyle": "light",
+    "backgroundColorTop": "#8B5E3C",
+    "backgroundColorBottom": "#8B5E3C"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#7C5836",
+    "selectedColor": "#3E2410",
+    "backgroundColor": "#FFF9E8",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/home/index", "text": "今日", "iconPath": "assets/icons/home.png", "selectedIconPath": "assets/icons/home.png" },
+      { "pagePath": "pages/trend/index", "text": "趋势", "iconPath": "assets/icons/chart.png", "selectedIconPath": "assets/icons/chart.png" },
+      { "pagePath": "pages/rank/index", "text": "榜单", "iconPath": "assets/icons/trophy.png", "selectedIconPath": "assets/icons/trophy.png" },
+      { "pagePath": "pages/me/index", "text": "我的", "iconPath": "assets/icons/user.png", "selectedIconPath": "assets/icons/user.png" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

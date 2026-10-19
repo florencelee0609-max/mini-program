@@ -1,0 +1,11 @@
+.big { font-size: 30px; font-weight: 800; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.avatars { display: flex; flex-wrap: wrap; gap: 8px; }
+.avatar {
+  width: 44px; height: 44px; border-radius: 9px;
+  border: 3px solid var(--wood);
+  background: var(--wheat);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.avatar--on { border-color: var(--gold); background: var(--gold); box-shadow: 0 0 0 2px var(--wood); }
+.avatar__img { width: 40px; height: 40px; }

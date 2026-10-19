@@ -1,0 +1,19 @@
+<view class="tb">
+  <view class="tb__inner">
+    <view
+      wx:for="{{list}}"
+      wx:key="path"
+      class="tb__item {{selected === index ? 'tb__item--on' : ''}}"
+      data-index="{{index}}"
+      bindtap="onTap"
+    >
+      <image
+        class="tb__ico"
+        src="/assets/icons/{{item.icon}}{{selected === index ? '-w' : ''}}.png"
+        mode="aspectFit"
+      />
+      <text class="tb__txt">{{item.text}}</text>
+    </view>
+  </view>
+  <view class="tb__safe"></view>
+</view>

@@ -1,0 +1,51 @@
+<px-navbar title="抗炎理论" sub="{{isHistory ? dateLabel + ' · 补记不补分' : ''}}" />
+
+<view class="page page--plain">
+  <view class="px-card head mt-2">
+    <view class="between">
+      <view>
+        <view class="row gap-1" style="align-items:baseline">
+          <text class="head__n num">{{count}}</text>
+          <text class="head__u">类</text>
+          <text class="head__need">/ 今天吃到的类别</text>
+        </view>
+        <view class="sub">{{need}} 类及以上算合格</view>
+      </view>
+      <view class="tag {{pass ? 'tag--on' : ''}}">{{pass ? '合格' : '不合格'}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!pass && count > 0}}" class="tip">今天 {{count}} 项，再补 {{need - count}} 项就合格了</view>
+  <view wx:if="{{count === 0}}" class="tip tip--soft">随意吃也没关系，明天再来</view>
+
+  <view wx:for="{{meals}}" wx:for-item="meal" wx:key="key" class="px-card px-card--fire meal mt-2">
+    <view class="px-card__accent"></view>
+    <view class="between">
+      <view class="h3">{{meal.label}}</view>
+      <view class="sub">{{meal.pickedCount}} 项</view>
+    </view>
+
+    <view class="grid">
+      <view
+        wx:for="{{meal.cells}}"
+        wx:for-item="cell"
+        wx:key="key"
+        class="cell {{cell.on ? 'cell--on' : ''}}"
+        data-meal="{{meal.key}}"
+        data-cat="{{cell.key}}"
+        bindtap="onToggle"
+      >
+        <image class="cell__ico" src="/assets/icons/{{cell.icon}}{{cell.on ? '-w' : ''}}.png" mode="aspectFit" />
+        <text class="cell__txt">{{cell.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="autosave">自动保存 · {{savedAt}} 已保存 · 满 {{need}} 类才合格计分</view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onNext">保存，去大睡 ›</view>
+  <view wx:if="{{isHistory}}" class="notice">历史记录 · 补记不给分</view>
+  <view class="safe-bottom"></view>
+</view>
+
+<view wx:if="{{pop}}" class="pop">+10</view>

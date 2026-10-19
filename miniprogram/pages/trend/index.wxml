@@ -1,0 +1,76 @@
+<px-navbar title="趋势" back="{{false}}" />
+
+<view class="page">
+  <view class="px-seg mt-2">
+    <view class="px-seg__item {{range === 7 ? 'px-seg__item--on' : ''}}" data-r="7" bindtap="onRange">最近 7 天</view>
+    <view class="px-seg__item {{range === 30 ? 'px-seg__item--on' : ''}}" data-r="30" bindtap="onRange">最近 30 天</view>
+  </view>
+
+  <view class="stats mt-2">
+    <view class="px-card stat">
+      <view class="stat__n num" style="color:var(--water)">{{summary.avgWater}}</view>
+      <view class="stat__l">日均升数</view>
+    </view>
+    <view class="px-card stat">
+      <view class="stat__n num" style="color:var(--fire)">{{summary.antiDays}}</view>
+      <view class="stat__l">抗炎合格天数</view>
+    </view>
+    <view class="px-card stat">
+      <view class="stat__n num" style="color:var(--grass)">{{summary.muscleCount}}</view>
+      <view class="stat__l">力量训练次数</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!hasData}}" class="empty">
+    数据攒到 7 天就能画线了，现在先照常记
+  </view>
+
+  <view class="px-card chartCard">
+    <view class="h3">体重（kg）</view>
+    <canvas type="2d" id="c1" class="cv"></canvas>
+  </view>
+
+  <view class="px-card chartCard">
+    <view class="h3">热量（千卡）<text class="h3sub">虚线 = 目标</text></view>
+    <canvas type="2d" id="c2" class="cv"></canvas>
+  </view>
+
+  <view class="px-card chartCard">
+    <view class="h3">饮水（升）<text class="h3sub">虚线 = 1.5</text></view>
+    <canvas type="2d" id="c3" class="cv"></canvas>
+  </view>
+
+  <view class="px-card chartCard">
+    <view class="h3">睡眠（小时）</view>
+    <canvas type="2d" id="c4" class="cv"></canvas>
+  </view>
+
+  <view class="px-card chartCard">
+    <view class="h3">运动（分钟）</view>
+    <canvas type="2d" id="c5" class="cv"></canvas>
+  </view>
+
+  <view class="px-card chartCard">
+    <view class="h3">积分（每天 0–40）</view>
+    <canvas type="2d" id="c6" class="cv"></canvas>
+  </view>
+
+  <view class="px-card">
+    <view class="h3">最近 7 天</view>
+    <view wx:for="{{dayList}}" wx:key="date" class="px-row" data-k="{{item.date}}" bindtap="onDay">
+      <view class="grow">
+        <view class="px-row__title">{{item.label}}</view>
+      </view>
+      <view class="dots">
+        <view class="dot dot--water {{item.water ? 'dot--on' : ''}}"></view>
+        <view class="dot dot--fire {{item.anti ? 'dot--on' : ''}}"></view>
+        <view class="dot dot--night {{item.sleep ? 'dot--on' : ''}}"></view>
+        <view class="dot dot--grass {{item.muscle ? 'dot--on' : ''}}"></view>
+      </view>
+      <view class="px-badge" style="margin-left:8px">{{item.score}}</view>
+    </view>
+    <view class="sub mt-1">点某一天可以补记（补记不补分）</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

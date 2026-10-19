@@ -1,0 +1,58 @@
+<px-navbar title="{{mode === 'edit' ? '修改档案' : '先认识一下你'}}" sub="{{mode === 'edit' ? '' : '第 1 步 / 共 3 步'}}" back="{{mode === 'edit'}}" />
+
+<view class="page page--plain">
+  <view class="px-card mt-3">
+    <view class="h3">身体数据</view>
+    <view class="sub mt-1">这五个数字只存在这台手机上，不会上传。</view>
+
+    <view class="mt-3">
+      <view class="px-field">
+        <view class="px-field__label">性别</view>
+        <view class="row gap-2">
+          <view class="opt {{sex === 'male' ? 'opt--on' : ''}}" data-k="male" bindtap="onSex">男</view>
+          <view class="opt {{sex === 'female' ? 'opt--on' : ''}}" data-k="female" bindtap="onSex">女</view>
+        </view>
+        <view wx:if="{{err.sex}}" class="px-field__err">{{err.sex}}</view>
+      </view>
+
+      <view class="px-field">
+        <view class="px-field__label">年龄</view>
+        <input class="px-input num {{err.age ? 'px-input--err' : ''}}" type="number" maxlength="2"
+               value="{{age}}" data-k="age" bindinput="onInput" placeholder="例如 30" />
+        <view wx:if="{{err.age}}" class="px-field__err">{{err.age}}</view>
+      </view>
+
+      <view class="px-field">
+        <view class="px-field__label">身高（厘米）</view>
+        <input class="px-input num {{err.heightCm ? 'px-input--err' : ''}}" type="number" maxlength="3"
+               value="{{heightCm}}" data-k="heightCm" bindinput="onInput" placeholder="例如 175" />
+        <view wx:if="{{err.heightCm}}" class="px-field__err">{{err.heightCm}}</view>
+      </view>
+
+      <view class="px-field">
+        <view class="px-field__label">体重（公斤）</view>
+        <input class="px-input num {{err.weightKg ? 'px-input--err' : ''}}" type="digit" maxlength="5"
+               value="{{weightKg}}" data-k="weightKg" bindinput="onInput" placeholder="例如 68.0" />
+        <view wx:if="{{err.weightKg}}" class="px-field__err">{{err.weightKg}}</view>
+      </view>
+
+      <view class="px-field">
+        <view class="px-field__label">日常活动量</view>
+        <view class="acts">
+          <view wx:for="{{acts}}" wx:key="key"
+                class="act {{activity === item.key ? 'act--on' : ''}}"
+                data-k="{{item.key}}" bindtap="onAct">
+            <view class="act__label">{{item.label}}</view>
+            <view class="act__sub">{{item.sub}}</view>
+          </view>
+        </view>
+        <view wx:if="{{err.activity}}" class="px-field__err">{{err.activity}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-4 {{canNext ? '' : 'px-btn--disabled'}}" bindtap="onNext">
+    {{mode === 'edit' ? '保存' : '下一步'}}
+  </view>
+  <view class="sub center mt-2">{{mode === 'edit' ? '改完会重算目标，你手改过的目标值不会被覆盖' : '按这五个数字算出你的热量 / 饮水 / 运动 / 睡眠目标'}}</view>
+</view>

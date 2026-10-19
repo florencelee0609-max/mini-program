@@ -1,0 +1,9 @@
+{
+  "name": "dt_profile",
+  "version": "1.0.0",
+  "description": "昵称/头像/隐身同步",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

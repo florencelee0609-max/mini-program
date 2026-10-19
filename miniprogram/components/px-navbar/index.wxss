@@ -1,0 +1,22 @@
+.nav {
+  position: fixed; left: 0; right: 0; top: 0; z-index: 60;
+  background: #5E3C22;
+  border-bottom: 3px solid #4A2E18;
+}
+.nav__bar {
+  height: 46px; display: flex; align-items: center; padding: 0 10px;
+}
+.nav__side { width: 56px; display: flex; align-items: center; }
+.nav__side--right { justify-content: flex-end; }
+.nav__back {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  border-radius: 9px;
+}
+.nav__back:active { background: rgba(0, 0, 0, .18); }
+.nav__back-ico { width: 18px; height: 18px; }
+.nav__mid { flex: 1; min-width: 0; text-align: center; }
+.nav__title {
+  font-size: 15px; font-weight: 800; color: #FFF9E8;
+  letter-spacing: .5px; line-height: 1.2;
+}
+.nav__sub { font-size: 9px; color: #F7E3BC; opacity: .8; line-height: 1.3; }

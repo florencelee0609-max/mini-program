@@ -1,0 +1,82 @@
+<px-navbar title="我的" back="{{false}}" />
+
+<view class="page">
+  <view class="px-card px-card--gold mt-2 who" bindtap="onNick">
+    <view class="who__av">
+      <image class="who__img" src="/assets/avatar/{{avatarKey}}.png" mode="aspectFit" />
+    </view>
+    <view class="grow" style="margin-left:10px">
+      <view class="h2">{{name}}</view>
+      <view class="sub">第 {{dayN}} 天 · 点这里改昵称头像</view>
+    </view>
+    <image class="who__pen" src="/assets/icons/edit.png" mode="aspectFit" />
+  </view>
+
+  <view class="px-card mt-2 list">
+    <view class="px-row" bindtap="onProfile">
+      <view class="grow">
+        <view class="px-row__title">身体档案</view>
+        <view class="px-row__sub">性别 / 年龄 / 身高 / 体重 / 活动量</view>
+      </view>
+      <view class="px-row__arrow">›</view>
+    </view>
+
+    <view class="px-row" bindtap="onGoal">
+      <view class="grow">
+        <view class="px-row__title">目标设定</view>
+        <view class="px-row__sub">{{goalText}}</view>
+      </view>
+      <view class="px-row__arrow">›</view>
+    </view>
+
+    <view class="px-row">
+      <view class="grow">
+        <view class="px-row__title">隐身</view>
+        <view class="px-row__sub">开了之后榜上显示「隐身中」，名次保留</view>
+      </view>
+      <switch checked="{{hideRank}}" color="#4A2E18" bindchange="onHideRank" />
+    </view>
+
+    <view class="px-row" bindtap="onRank">
+      <view class="grow">
+        <view class="px-row__title">大理论榜</view>
+        <view class="px-row__sub">看排名、邀请搭子</view>
+      </view>
+      <view class="px-row__arrow">›</view>
+    </view>
+  </view>
+
+  <view class="px-card mt-2 list">
+    <view class="px-row" bindtap="onData">
+      <view class="grow">
+        <view class="px-row__title">数据与备份</view>
+        <view class="px-row__sub">占用 {{storageText}} · 上次备份 {{lastBackupText}}</view>
+      </view>
+      <view class="px-row__arrow">›</view>
+    </view>
+    <view class="px-row" bindtap="onAbout">
+      <view class="grow">
+        <view class="px-row__title">关于</view>
+        <view class="px-row__sub">v{{version}}</view>
+      </view>
+      <view class="px-row__arrow">›</view>
+    </view>
+  </view>
+
+  <view class="warn">
+    记录只存在这台手机上。删掉小程序、清理微信存储、换手机，记录都会丢，没有云端副本。
+  </view>
+  <view class="safe-bottom"></view>
+</view>
+
+<px-sheet show="{{showNick}}" title="昵称和头像" bind:close="onCloseNick">
+  <input class="px-input" maxlength="12" value="{{nick}}" bindinput="onNickInput" placeholder="不填就叫「神秘大理论家」" />
+  <view class="avatars mt-3">
+    <view wx:for="{{avatars}}" wx:key="*this"
+          class="av {{pick === item ? 'av--on' : ''}}"
+          data-k="{{item}}" bindtap="onPickAvatar">
+      <image class="av__img" src="/assets/avatar/{{item}}.png" mode="aspectFit" />
+    </view>
+  </view>
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onSaveNick">保存</view>
+</px-sheet>

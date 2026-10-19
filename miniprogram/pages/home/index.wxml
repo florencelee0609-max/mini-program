@@ -1,0 +1,92 @@
+<px-navbar title="今日" sub="{{dateLabel}}" back="{{false}}">
+  <view slot="right" class="score">
+    <text class="score__now num">{{score}}</text>
+    <text class="score__max num">/{{max}}</text>
+  </view>
+</px-navbar>
+
+<view class="page">
+  <view wx:if="{{pending > 0}}" class="offline">
+    <text class="offline__dot"></text>
+    <text>离线 · {{pending}} 条待同步</text>
+  </view>
+
+  <!-- 未填档案 -->
+  <view wx:if="{{!ready}}" class="px-card mt-3 center">
+    <view class="h2">先填 5 个数字</view>
+    <view class="sub mt-1">有了身高体重年龄，才有热量、饮水、运动的目标。</view>
+    <view class="px-btn px-btn--primary mt-3" bindtap="onSetup" data-k="setup">去填档案</view>
+  </view>
+
+  <block wx:if="{{ready}}">
+    <!-- 四张理论卡 -->
+    <view
+      wx:for="{{cards}}"
+      wx:for-item="card"
+      wx:key="key"
+      class="px-card px-card--{{card.color}} px-card--tap card mt-2"
+      data-k="{{card.key}}"
+      bindtap="onCard"
+    >
+      <view class="px-card__accent"></view>
+      <view class="card__head">
+        <view class="px-ico px-ico--{{card.color}} ico24">
+          <image class="ico24__img" src="/assets/icons/{{card.icon}}-w.png" mode="aspectFit" />
+        </view>
+        <view class="grow" style="margin-left:8px">
+          <view class="h3">{{card.label}}</view>
+        </view>
+        <view class="tag {{card.on ? 'tag--on' : ''}}">{{card.status}}</view>
+      </view>
+
+      <view class="card__num">
+        <text class="card__main num" style="color:var(--{{card.color}})">{{card.main}}</text>
+        <text class="card__sub">{{card.sub}}</text>
+      </view>
+
+      <view class="px-progress px-progress--{{card.color}}">
+        <view
+          wx:for="{{cells10}}"
+          wx:for-item="c"
+          wx:for-index="ci"
+          wx:key="*this"
+          class="px-progress__cell {{ci < card.cells ? 'px-progress__cell--on' : ''}}"
+        ></view>
+      </view>
+
+      <view wx:if="{{card.fresh}}" class="float10">+10</view>
+    </view>
+
+    <!-- 今日两个数 -->
+    <view class="px-card px-card--tap pair mt-2" bindtap="onWeight">
+      <view class="pair__label">体重</view>
+      <view class="grow"></view>
+      <view class="pair__val num">{{weightText}}</view>
+      <image class="pair__pen" src="/assets/icons/edit.png" mode="aspectFit" />
+    </view>
+    <view class="px-card px-card--tap pair" bindtap="onCal">
+      <view class="pair__label">热量</view>
+      <view class="grow"></view>
+      <view class="pair__val num">{{calText}}</view>
+      <image class="pair__pen" src="/assets/icons/edit.png" mode="aspectFit" />
+    </view>
+
+    <!-- 提示条 -->
+    <view wx:if="{{hint.text}}" class="hint hint--{{hint.tone}}">
+      {{hint.text}}
+    </view>
+
+    <view class="foot">四项各 10 分 · 每天最多 40 分</view>
+  </block>
+
+  <view class="safe-bottom"></view>
+</view>
+
+<px-sheet show="{{sheet}}" title="{{sheetTitle}}" bind:close="closeSheet">
+  <view class="sheet-row">
+    <input class="px-input num grow" type="digit" value="{{sheetValue}}" bindinput="onSheetInput"
+           placeholder="留空 = 不记录" focus="{{sheet}}" />
+    <text class="sheet-unit">{{sheetUnit}}</text>
+  </view>
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="saveSheet">保存</view>
+</px-sheet>

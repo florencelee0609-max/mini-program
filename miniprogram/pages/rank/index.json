@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "px-navbar": "/components/px-navbar/index",
+    "px-sheet": "/components/px-sheet/index"
+  }
+}

@@ -1,0 +1,47 @@
+<px-navbar title="大睡理论" sub="{{isHistory ? dateLabel + ' · 补记不补分' : ''}}" />
+
+<view class="page page--plain">
+  <view class="moon-wrap">
+    <canvas type="2d" id="moonCv" class="moon-cv"></canvas>
+  </view>
+
+  <view class="figure">
+    <text class="figure__main num">{{durationText}}</text>
+  </view>
+  <view class="figure__sub">{{moonText}}</view>
+  <view class="moon-tip">8 小时是月圆，其余按时长等分（4 小时正好半月）</view>
+
+  <view class="times">
+    <picker mode="time" value="{{bed}}" bindchange="onBed">
+      <view class="time-card">
+        <view class="time-card__label">入睡</view>
+        <view class="time-card__val num">{{bed || '--:--'}}</view>
+      </view>
+    </picker>
+    <picker mode="time" value="{{wake}}" bindchange="onWake">
+      <view class="time-card">
+        <view class="time-card__label">起床</view>
+        <view class="time-card__val num">{{wake || '--:--'}}</view>
+      </view>
+    </picker>
+  </view>
+
+  <view wx:if="{{crossDay}}" class="tip">起床比入睡早，已按跨天计算</view>
+
+  <view class="px-card mt-3">
+    <view class="h3">昨晚睡得怎么样</view>
+    <view class="row gap-2 mt-2">
+      <view class="q {{quality === 'good' ? 'q--on' : ''}}" data-k="good" bindtap="onQuality">优</view>
+      <view class="q {{quality === 'fair' ? 'q--on' : ''}}" data-k="fair" bindtap="onQuality">良</view>
+      <view class="q {{quality === 'poor' ? 'q--on' : ''}}" data-k="poor" bindtap="onQuality">差</view>
+    </view>
+    <view class="sub mt-2">自评「差」也给分——记录本身就有价值。时长和自评都填了才算完成。</view>
+  </view>
+
+  <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onNext">保存，去薄肌 ›</view>
+
+  <view wx:if="{{isHistory}}" class="notice">历史记录 · 补记不给分</view>
+  <view class="safe-bottom"></view>
+</view>
+
+<view wx:if="{{pop}}" class="pop">+10</view>
