@@ -70,7 +70,19 @@ Page({
   },
 
   onNext: function () {
-    if (!this.check()) return
+    if (!this.check()) {
+      // 不能静默返回：用户会以为按钮坏了。必须给出可读的反馈。
+      const err = this.data.err || {}
+      const order = ['sex', 'age', 'heightCm', 'weightKg', 'activity']
+      const missing = order.filter(function (k) { return err[k] })
+      wx.showToast({
+        title: missing.length === 1
+          ? err[missing[0]]
+          : '还有 ' + missing.length + ' 项没填好',
+        icon: 'none'
+      })
+      return
+    }
     const draft = {
       sex: this.data.sex,
       age: Number(this.data.age),

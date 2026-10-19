@@ -1,17 +1,20 @@
-<view class="nav" style="padding-top:{{statusBar}}px">
-  <view class="nav__bar">
-    <view class="nav__side">
-      <view wx:if="{{back}}" class="nav__back" bindtap="onBack">
-        <image class="nav__back-ico" src="/assets/icons/back-w.png" mode="aspectFit" />
+<!-- 单根节点：多根在部分基础库下会导致组件内事件绑定失效 -->
+<view class="nav-root">
+  <view class="nav" style="padding-top:{{statusBar}}px">
+    <view class="nav__bar">
+      <view class="nav__side">
+        <view wx:if="{{back}}" class="nav__back" bindtap="onBack">
+          <image class="nav__back-ico" src="/assets/icons/back-w.png" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="nav__mid">
+        <view class="nav__title">{{title}}</view>
+        <view wx:if="{{sub}}" class="nav__sub">{{sub}}</view>
+      </view>
+      <view class="nav__side nav__side--right">
+        <slot name="right"></slot>
       </view>
     </view>
-    <view class="nav__mid">
-      <view class="nav__title">{{title}}</view>
-      <view wx:if="{{sub}}" class="nav__sub">{{sub}}</view>
-    </view>
-    <view class="nav__side nav__side--right">
-      <slot name="right"></slot>
-    </view>
   </view>
+  <view style="height:{{statusBar + 46}}px"></view>
 </view>
-<view style="height:{{statusBar + 46}}px"></view>

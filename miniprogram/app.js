@@ -1,5 +1,31 @@
 const config = require('./config')
 
+/**
+ * 只在开发版弹出错误详情。线上不做任何打扰。
+ * 作用：任何未捕获异常都会显式提示，不会再出现「点了没反应」这种无信息状态。
+ */
+function isDevelop() {
+  try {
+    const info = wx.getAccountInfoSync && wx.getAccountInfoSync()
+    if (!info || !info.miniProgram) return true
+    return info.miniProgram.envVersion === 'develop'
+  } catch (e) {
+    return true
+  }
+}
+
+function reportError(where, e) {
+  console.error('[' + where + ']', e)
+  if (!isDevelop()) return
+  const text = String((e && e.message) || e || '未知错误')
+  wx.showModal({
+    title: '运行时出错',
+    content: where + '：' + text.slice(0, 180),
+    showCancel: false,
+    confirmText: '知道了'
+  })
+}
+
 App({
   globalData: {
     coldStart: true,        // 用于开屏只播一次
@@ -27,5 +53,13 @@ App({
   onShow(options) {
     const q = (options && options.query) || {}
     if (q.inviteCode) this.globalData.inviteCode = q.inviteCode
+  },
+
+  onError(err) {
+    reportError('onError', err)
+  },
+
+  onUnhandledRejection(res) {
+    reportError('onUnhandledRejection', res && res.reason)
   }
 })

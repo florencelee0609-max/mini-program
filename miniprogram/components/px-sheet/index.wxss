@@ -12,8 +12,10 @@
   transform: translateY(110%);
   transition: transform 160ms linear;
   box-shadow: inset 0 3px 0 #E8C68C;
+  /* 关闭时彻底退出点击命中，避免这条 fixed 层意外挡住页面按钮 */
+  pointer-events: none;
 }
-.sheet--on { transform: translateY(0); }
+.sheet--on { transform: translateY(0); pointer-events: auto; }
 .sheet__bar {
   width: 44px; height: 4px; border-radius: 2px;
   background: #E8C68C; margin: 8px auto 0;
