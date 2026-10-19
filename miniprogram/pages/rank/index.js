@@ -136,6 +136,8 @@ Page({
   onKbFocus: function (e) {
     const d = (e && e.detail) || {}
     const h = Number(d.height)
+    // 真机上如果弹层位置仍不对，看这行日志里的实际数值即可定位
+    console.log('[px-sheet] keyboard height =', h)
     this.setData({ kb: isNaN(h) || h < 0 ? 0 : h })
   },
 
