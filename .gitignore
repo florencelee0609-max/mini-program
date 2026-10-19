@@ -24,7 +24,10 @@ desktop.ini
 *.log
 npm-debug.log*
 *.tmp
-dist/
+
+# 构建产物：dist/ 下的中间文件不入库，但放行可导入包，方便从 GitHub 直接下载
+dist/*
+!dist/*.zip
 
 # 本工程智能体的本地工作数据（不参与代码版本管理）
 .workbuddy/
