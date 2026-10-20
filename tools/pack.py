@@ -78,8 +78,10 @@ GUIDE = """《大理论时代》小程序 · 导入说明
   1. 开发者工具左上角点「云开发」，开通并记下环境 ID
   2. 填到 miniprogram/config.js 的 cloudEnvId，例如：
          cloudEnvId: 'dalilun-3gxxxx'
-  3. 在云开发控制台 → 数据库，手动建集合：dt_scores / dt_profiles / dt_invites
+  3. 在云开发控制台 → 数据库，手动建 4 个集合（权限都选「仅管理端可读写」）：
+         dt_scores   dt_users   dt_buddies   dt_invites
   4. 给 dt_scores 建索引：_openid + date + module 唯一索引（防重复加分）
+     给 dt_users 建 _openid 唯一索引，dt_buddies 建 _openid + buddyOpenid 唯一索引
   5. 右键 cloudfunctions 下每个云函数 → 上传并部署（云端安装依赖）
 
 五、发布上线前还需
@@ -172,6 +174,12 @@ def build_stage():
         src = os.path.join(ROOT, f)
         if os.path.exists(src):
             shutil.copy2(src, os.path.join(docs, f))
+    # docs/ 下新增的说明文档（上线清单、云端搭建步骤）一并带上
+    docs_src = os.path.join(ROOT, "docs")
+    if os.path.isdir(docs_src):
+        for f in sorted(os.listdir(docs_src)):
+            if f.endswith(".md"):
+                shutil.copy2(os.path.join(docs_src, f), os.path.join(docs, f))
     brand_src = os.path.join(ROOT, "assets", "brand")
     if os.path.isdir(brand_src):
         icon_dir = os.path.join(docs, "小程序头像")
