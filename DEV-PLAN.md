@@ -238,7 +238,7 @@ enqueue(entry) / flush()                // 离线队列
             │                              → 弹 +10 → 调云函数 dt_score
             │                                   ├─ 成功 → synced:true
             │                                   └─ 失败 → 留队列，顶部「离线 · X 条待同步」
-            └─ 已发过 → 什么都不做（分数不回收）
+            └─ 已发过 → 交给 reconcile 判断：记录仍达标不动，改到不达标则回收
 ```
 
 ### 2.6 `utils/backup.js`

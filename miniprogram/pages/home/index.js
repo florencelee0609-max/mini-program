@@ -58,6 +58,8 @@ Page({
       return
     }
     const today = dateUtil.dayKey()
+    // 兜底结算：任何页面改过记录，回首页时都按当前记录对齐分数（达标补发、不达标回收）
+    points.reconcile(today)
     const p = profile.getProfile()
     const t = p.targets || {}
     const day = daily.getDay(today)
@@ -140,7 +142,10 @@ Page({
   },
 
   buildHint: function (cards, antiN, score, day) {
-    if (points.pendingCount() > 0) return { text: '有 ' + points.pendingCount() + ' 条分数待同步', tone: 'gold' }
+    // 只有真开了云开发才提示待同步，否则没配环境时会一直挂着"待同步"
+    if (cloud.ready() && points.pendingCount() > 0) {
+      return { text: '有 ' + points.pendingCount() + ' 条分数待同步', tone: 'gold' }
+    }
     if (score >= 40) return { text: '今天四项全达成，40 分到手', tone: 'grass' }
     const undone = cards.filter(function (c) { return !c.on })
     if (undone.length === 1 && score > 0) return { text: '只差' + undone[0].label.replace('理论', '') + '了', tone: '' }

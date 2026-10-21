@@ -49,7 +49,7 @@ ok('三类即合格', daily.antiPass(today) === true, daily.antiCount(today))
 daily.antiToggle(today, 'lunch', 'fish')
 ok('取消一项后回到 2 类', daily.antiCount(today) === 2, daily.antiCount(today))
 
-console.log('\n[D] 积分幂等与不回收')
+console.log('\n[D] 积分幂等与当天结算')
 ok('抗炎不合格不给分', points.tryAward(today, 'anti', today).awarded === false)
 daily.setWater(today, 1.5)
 ok('1.5 升不再算达标（目标 2.2）', points.tryAward(today, 'water', today).awarded === false)
@@ -57,7 +57,20 @@ daily.setWater(today, 2.2)
 ok('喝到 2.2 升才给 10 分', points.tryAward(today, 'water', today).awarded === true)
 ok('同一模块再发不给', points.tryAward(today, 'water', today).reason === 'already')
 daily.setWater(today, 0.4)
-ok('删到 0.4 升后分数仍在', points.dayTotal(today) === 10, points.dayTotal(today))
+const back = points.reconcile(today, today)
+ok('改到 0.4 升 → 当天分数被回收（0 分）',
+  points.dayTotal(today) === 0 && back.lost.indexOf('water') >= 0, [points.dayTotal(today), back])
+ok('回收后留墓碑并标为待同步（云端要删那条）',
+  points.ledger().some(function (e) { return e.module === 'water' && e.revoked && !e.synced }))
+daily.setWater(today, 2.2)
+const again = points.reconcile(today, today)
+ok('改回 2.2 升 → 重新拿到 10 分',
+  points.dayTotal(today) === 10 && again.got.indexOf('water') >= 0, [points.dayTotal(today), again])
+daily.setWater(today, 0.4)
+points.reconcile(today, today)
+daily.setWater(today, 2.2)
+points.reconcile(today, today)
+ok('反复改来改去不会叠加（仍是 10 分）', points.dayTotal(today) === 10, points.dayTotal(today))
 ok('补记旧日期不给分', points.tryAward(yest, 'water', today).reason === 'notToday')
 
 console.log('\n[D2] 大睡得分线（≥7 小时，质量不参与）')
@@ -71,8 +84,14 @@ daily.setSleep(today, { quality: null })
 ok('不填自评也算完成', daily.isDone('sleep', today) === true)
 ok('满 7 小时给 10 分', points.tryAward(today, 'sleep', today).awarded === true)
 daily.setSleep(today, { wake: '05:59' })
-ok('先给分后改到 6时59分，分数不回收（20 分）',
-  points.dayTotal(today) === 20, points.dayTotal(today))
+const lostSleep = points.reconcile(today, today)
+ok('先给分再改到 6时59分 → 结算后扣回（10 分）',
+  points.dayTotal(today) === 10 && lostSleep.lost.indexOf('sleep') >= 0,
+  [points.dayTotal(today), lostSleep])
+daily.setSleep(today, { wake: '06:30' })
+ok('再改回 7时30分 → 又拿回 10 分',
+  points.reconcile(today, today).got.indexOf('sleep') >= 0 && points.dayTotal(today) === 20,
+  points.dayTotal(today))
 
 console.log('\n[E] 默认值与不落盘')
 const anyDay = dateUtil.addDays(today, -40)

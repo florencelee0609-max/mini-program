@@ -62,7 +62,7 @@ miniprogram/
 │  ├─ profile.js          档案、目标覆盖、自定义动作
 │  ├─ goals.js            目标公式（PRD 5.2 唯一实现）
 │  ├─ daily.js            每日记录、抗炎去重、周次数、完成判定
-│  ├─ points.js           积分账本（幂等、不回收、补记不发分）
+│  ├─ points.js           积分账本（幂等、当天实时结算、补记不发分）
 │  ├─ cloud.js            云函数封装 + 离线降级 + 补传
 │  ├─ backup.js           导出 / 校验 / 完全替换恢复 / 清空
 │  ├─ chart.js            Canvas 折线 + 柱状（直角、方点、空柱只描边）

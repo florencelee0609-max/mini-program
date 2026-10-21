@@ -4,7 +4,7 @@
  * 2. version：显示在「我的 → 关于」
  */
 module.exports = {
-  version: '1.1.0',
+  version: '1.1.1',
   cloudEnvId: '',            // ← 填这里，例如 'dalilun-3gxxxx'
   appName: '大理论时代',
   slogan: '全民严肃进入大理论时代',

@@ -1,12 +1,16 @@
 /**
- * 积分账本。与 daily 完全解耦：删记录不删分，分数只增不减。
- * 唯一键 date + module，重复调用不会重复发分。
+ * 积分账本。唯一键 date + module。
+ * 当天记录改动会**实时结算**：达标发分，改回不达标则撤销该条（跨天不动历史）。
+ * 撤销用墓碑方式：原条目置 points=0 + revoked=true + synced=false，
+ * 联网时用 revoke 动作把云端那条也删掉，保证本地与榜单一致。
  */
 
 const storage = require('./storage')
 const config = require('../config')
 const dateUtil = require('./date')
 const daily = require('./daily')
+
+const MODULES = ['water', 'anti', 'sleep', 'muscle']
 
 function ledger() {
   const arr = storage.read(storage.KEYS.points, [])
@@ -17,8 +21,13 @@ function save(arr) {
   storage.write(storage.KEYS.points, arr)
 }
 
+/** 只算还没被撤销的条目 */
+function activeLedger() {
+  return ledger().filter(function (e) { return !e.revoked })
+}
+
 function has(dateKey, module) {
-  return ledger().some(function (e) { return e.date === dateKey && e.module === module })
+  return activeLedger().some(function (e) { return e.date === dateKey && e.module === module })
 }
 
 function todayKey() {
@@ -47,14 +56,51 @@ function tryAward(dateKey, module, serverToday) {
   return { awarded: true, points: config.POINTS_PER_MODULE }
 }
 
-/** 四个模块一起判定，返回本轮新发的模块 key 数组 */
-function awardAllIfDone(dateKey, serverToday) {
-  const got = []
-  ;['water', 'anti', 'sleep', 'muscle'].forEach(function (m) {
-    const r = tryAward(dateKey, m, serverToday)
-    if (r.awarded) got.push(m)
+/**
+ * 撤销某天某模块已发的分。改动不达标时调用。
+ * @returns {boolean} 是否真的撤掉了一条
+ */
+function revoke(dateKey, module) {
+  const arr = ledger()
+  let hit = false
+  arr.forEach(function (e) {
+    if (!e.revoked && e.date === dateKey && e.module === module) {
+      e.revoked = true
+      e.points = 0
+      e.synced = false          // 云端那条也要删，标成待同步
+      e.revokedAt = Date.now()
+      hit = true
+    }
   })
-  return got
+  if (hit) save(arr)
+  return hit
+}
+
+/**
+ * 按当前记录重新结算今天：达标补发、不达标回收。
+ * 只处理「今天」，历史日期一律不动（避免历史分被反复改写）。
+ * @returns {{got:string[], lost:string[]}}
+ */
+function reconcile(dateKey, serverToday) {
+  const today = serverToday || todayKey()
+  if (dateKey !== today) return { got: [], lost: [] }
+
+  const got = []
+  const lost = []
+  MODULES.forEach(function (m) {
+    if (daily.isDone(m, dateKey)) {
+      const r = tryAward(dateKey, m, today)
+      if (r.awarded) got.push(m)
+    } else if (revoke(dateKey, m)) {
+      lost.push(m)
+    }
+  })
+  return { got: got, lost: lost }
+}
+
+/** 兼容旧调用：只返回本轮新发的模块 key 数组（内部同样会回收） */
+function awardAllIfDone(dateKey, serverToday) {
+  return reconcile(dateKey, serverToday).got
 }
 
 function dayTotal(dateKey) {
@@ -114,7 +160,7 @@ function scoreSeries(n, endDate) {
 }
 
 module.exports = {
-  ledger, has, tryAward, awardAllIfDone,
+  ledger, activeLedger, has, tryAward, revoke, reconcile, awardAllIfDone,
   dayTotal, rangeTotal, total, todayMax,
   pendingEntries, pendingCount, markSynced, markAllUnsynced, scoreSeries
 }

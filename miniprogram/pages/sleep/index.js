@@ -153,8 +153,14 @@ Page({
 
   award: function () {
     if (this.data.isHistory) return
-    const got = points.awardAllIfDone(this.data.dateKey, dateUtil.dayKey())
-    if (got.indexOf('sleep') >= 0) {
+    const r = points.reconcile(this.data.dateKey, dateUtil.dayKey())
+    if (r.lost.indexOf('sleep') >= 0) {
+      this.setData({ pop: false })
+      wx.showToast({ title: '不足 7 小时，已撤回 10 分', icon: 'none' })
+      cloud.pushPendingScores()
+      return
+    }
+    if (r.got.indexOf('sleep') >= 0) {
       this.setData({ pop: true })
       const self = this
       setTimeout(function () { self.setData({ pop: false }) }, 900)

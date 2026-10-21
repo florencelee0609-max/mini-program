@@ -64,9 +64,11 @@ function pushPendingScores() {
       return Promise.resolve({ pushed: done.length })
     }
     const e = list[i++]
-    return call('dt_score', { action: 'submit', date: e.date, module: e.module })
+    // 被撤销的条目推 revoke（云端删掉那条），其余推 submit
+    const action = e.revoked ? 'revoke' : 'submit'
+    return call('dt_score', { action: action, date: e.date, module: e.module })
       .then(function (r) {
-        if (r && (r.ok || r.code === 'DUPLICATE')) done.push(e)
+        if (r && (r.ok || r.code === 'DUPLICATE' || r.code === 'NOT_FOUND')) done.push(e)
         return step()
       })
       .catch(function () {
