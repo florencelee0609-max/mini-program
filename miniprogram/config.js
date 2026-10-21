@@ -4,8 +4,8 @@
  * 2. version：显示在「我的 → 关于」
  */
 module.exports = {
-  version: '1.1.1',
-  cloudEnvId: '',            // ← 填这里，例如 'dalilun-3gxxxx'
+  version: '1.1.2',
+  cloudEnvId: 'cloud1-d3ghwmm9qac18a1e7',   // 云开发环境 ID（开通后从控制台复制）
   appName: '大理论时代',
   slogan: '全民严肃进入大理论时代',
   waterSlogan: '弱者喝饮料，强者喝大水',
