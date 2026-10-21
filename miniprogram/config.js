@@ -4,7 +4,7 @@
  * 2. version：显示在「我的 → 关于」
  */
 module.exports = {
-  version: '1.0.0',
+  version: '1.1.0',
   cloudEnvId: '',            // ← 填这里，例如 'dalilun-3gxxxx'
   appName: '大理论时代',
   slogan: '全民严肃进入大理论时代',
@@ -12,7 +12,7 @@ module.exports = {
   // 业务常量（改了要和 PRD 同步）
   WATER_MIN_L: 1.5,          // 判定线下限（体重建议更低时取这个值）
   WATER_ML_PER_KG: 32.5,     // 建议饮水 = 体重(kg) × 32.5 毫升
-  SLEEP_FULL_MIN: 480,       // 8 小时 = 月圆
+  SLEEP_PASS_MIN: 420,       // 睡眠得分线：≥7 小时才给分（正好 420 也算）；同时是月圆基准
   WATER_GOAL_L: 1.5,         // 兼容旧引用，等同 WATER_MIN_L
   ANTI_PASS_COUNT: 3,        // 去重类别 ≥3 合格
   POINTS_PER_MODULE: 10,

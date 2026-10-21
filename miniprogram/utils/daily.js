@@ -151,7 +151,12 @@ function isDone(module, dateKey) {
   const day = getDay(dateKey)
   if (module === 'water') return day.water >= goals.waterGoal() - 1e-9
   if (module === 'anti') return antiCount(dateKey) >= config.ANTI_PASS_COUNT
-  if (module === 'sleep') return !!(day.sleep.bed && day.sleep.wake && day.sleep.quality)
+  // 大睡只认时长：填了入睡+起床，且时长 ≥ 7 小时（420 分）才算完成。
+  // 睡眠质量（quality）只作记录，不参与判定 —— 低于 7 小时自评再好也不给分。
+  if (module === 'sleep') {
+    const s = day.sleep
+    return !!(s.bed && s.wake && (Number(s.durationMin) || 0) >= config.SLEEP_PASS_MIN)
+  }
   if (module === 'muscle') return day.muscle.length > 0
   return false
 }

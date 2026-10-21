@@ -68,6 +68,8 @@ Page({
 
     const waterGoal = goals.waterGoal()
     const sleepMin = day.sleep.durationMin || 0
+    // 大睡判定只看时长：≥7 小时（420 分）才达标，质量不参与
+    const sleepDone = !!(day.sleep.bed && day.sleep.wake && sleepMin >= config.SLEEP_PASS_MIN)
 
     const flags = {
       water: points.has(today, 'water'),
@@ -103,12 +105,15 @@ Page({
       },
       {
         key: 'sleep', label: '大睡理论', icon: 'moon', color: 'night',
-        main: dateUtil.fmtDuration(sleepMin), sub: sleepMin ? '昨晚' : '还没记',
-        cells: clampCells(sleepMin / 480 * 10),
-        on: !!(day.sleep.bed && day.sleep.wake && day.sleep.quality),
-        status: (day.sleep.bed && day.sleep.wake && day.sleep.quality)
-          ? ({ good: '优', fair: '良', poor: '差' })[day.sleep.quality]
-          : (day.sleep.quality ? '缺时长' : '未记录'),
+        main: dateUtil.fmtDuration(sleepMin),
+        sub: sleepMin ? ('昨晚 · 满 ' + dateUtil.fmtDuration(config.SLEEP_PASS_MIN) + ' 计分') : '还没记',
+        cells: clampCells(sleepMin / config.SLEEP_PASS_MIN * 10),
+        on: sleepDone,
+        status: sleepDone
+          ? '达标'
+          : (day.sleep.bed && day.sleep.wake
+            ? ('还差 ' + dateUtil.fmtDuration(config.SLEEP_PASS_MIN - sleepMin))
+            : '未记录'),
         fresh: !!fresh.sleep
       },
       {

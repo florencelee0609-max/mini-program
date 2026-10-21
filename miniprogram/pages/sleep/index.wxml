@@ -9,7 +9,9 @@
     <text class="figure__main num">{{durationText}}</text>
   </view>
   <view class="figure__sub">{{moonText}}</view>
-  <view class="moon-tip">8 小时是月圆，其余按时长等分（4 小时正好半月）</view>
+  <view class="moon-tip">7 小时是月圆，也是得分线；不满 7 小时不给分</view>
+
+  <view wx:if="{{shortText}}" class="tip">还差 {{shortText}} 才够 {{passText}}，今天不给分</view>
 
   <view class="times">
     <picker mode="time" value="{{bed}}" bindchange="onBed">
@@ -35,7 +37,7 @@
       <view class="q {{quality === 'fair' ? 'q--on' : ''}}" data-k="fair" bindtap="onQuality">良</view>
       <view class="q {{quality === 'poor' ? 'q--on' : ''}}" data-k="poor" bindtap="onQuality">差</view>
     </view>
-    <view class="sub mt-2">自评「差」也给分——记录本身就有价值。时长和自评都填了才算完成。</view>
+    <view class="sub mt-2">自评只作记录，不影响得分。睡满 7 小时就给 10 分。</view>
   </view>
 
   <view class="px-btn px-btn--primary px-btn--block mt-3" bindtap="onNext">保存，去薄肌 ›</view>

@@ -47,7 +47,7 @@ Page({
         label: dateUtil.fmtDayLabel(k).replace('今天 · ', '今天 '),
         water: d.water > 0,
         anti: daily.antiCount(k) >= config.ANTI_PASS_COUNT,
-        sleep: !!(d.sleep.bed && d.sleep.wake && d.sleep.quality),
+        sleep: !!(d.sleep.bed && d.sleep.wake && (Number(d.sleep.durationMin) || 0) >= config.SLEEP_PASS_MIN),
         muscle: d.muscle.length > 0,
         score: points.dayTotal(k)
       }
@@ -84,7 +84,7 @@ Page({
 
     this.drawOne('c4', 'line',
       rows.map(function (r) { return r.sleepMin ? Math.round(r.sleepMin / 6) / 10 : null }),
-      { color: '#7B5EA7', unit: 'h', target: 8, targetColor: '#7C5836' })
+      { color: '#7B5EA7', unit: 'h', target: config.SLEEP_PASS_MIN / 60, targetColor: '#7C5836' })
 
     this.drawOne('c5', 'bar',
       rows.map(function (r) { return r.muscleMin || 0 }),

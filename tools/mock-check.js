@@ -60,6 +60,20 @@ daily.setWater(today, 0.4)
 ok('删到 0.4 升后分数仍在', points.dayTotal(today) === 10, points.dayTotal(today))
 ok('补记旧日期不给分', points.tryAward(yest, 'water', today).reason === 'notToday')
 
+console.log('\n[D2] 大睡得分线（≥7 小时，质量不参与）')
+daily.setSleep(today, { bed: '23:00', wake: '05:59', quality: 'good' })
+ok('6时59分 + 自评优 → 不算完成',
+  daily.isDone('sleep', today) === false, daily.getDay(today).sleep.durationMin)
+daily.setSleep(today, { wake: '06:00' })
+ok('正好 7 小时 → 完成（边界含等于）',
+  daily.isDone('sleep', today) === true, daily.getDay(today).sleep.durationMin)
+daily.setSleep(today, { quality: null })
+ok('不填自评也算完成', daily.isDone('sleep', today) === true)
+ok('满 7 小时给 10 分', points.tryAward(today, 'sleep', today).awarded === true)
+daily.setSleep(today, { wake: '05:59' })
+ok('先给分后改到 6时59分，分数不回收（20 分）',
+  points.dayTotal(today) === 20, points.dayTotal(today))
+
 console.log('\n[E] 默认值与不落盘')
 const anyDay = dateUtil.addDays(today, -40)
 ok('缺失日期返回默认对象', daily.getDay(anyDay).water === 0)

@@ -16,6 +16,9 @@ Page({
     quality: '',
     crossDay: false,
     done: false,
+    qualified: false,
+    passText: '7时',
+    shortText: '',
     moonText: '还没填入睡和起床时间',
     pop: false
   },
@@ -39,7 +42,11 @@ Page({
     const d = daily.getDay(this.data.dateKey)
     const s = d.sleep
     const min = s.durationMin || 0
-    const k = Math.min(1, Math.max(0, min / config.SLEEP_FULL_MIN))
+    const pass = config.SLEEP_PASS_MIN
+    const k = Math.min(1, Math.max(0, min / pass))
+    const hasTime = !!(s.bed && s.wake)
+    // 只要时长够 7 小时就算完成，睡眠质量不参与判定
+    const qualified = hasTime && min >= pass
     this.setData({
       bed: s.bed || '',
       wake: s.wake || '',
@@ -47,9 +54,13 @@ Page({
       durationText: dateUtil.fmtDuration(min),
       quality: s.quality || '',
       crossDay: !!(s.bed && s.wake && dateUtil.toMin(s.wake) <= dateUtil.toMin(s.bed)),
-      done: !!(s.bed && s.wake && s.quality),
+      done: qualified,
+      qualified: qualified,
+      passText: dateUtil.fmtDuration(pass),
+      shortText: (hasTime && !qualified) ? dateUtil.fmtDuration(pass - min) : '',
       moonText: min
-        ? ('睡了 ' + dateUtil.fmtDuration(min) + ' · 月相 ' + Math.round(k * 100) + '%')
+        ? ('睡了 ' + dateUtil.fmtDuration(min) + ' · 月相 ' + Math.round(k * 100) + '%' +
+           (qualified ? ' · 达标' : ''))
         : '还没填入睡和起床时间'
     })
     const self = this
@@ -57,7 +68,7 @@ Page({
   },
 
   /**
-   * 月相：8 小时为月圆，其余按比例等分（4 小时正好半月）。
+   * 月相：7 小时为月圆（也就是得分线），其余按比例等分（3.5 小时正好半月）。
    * 逐格判断并整块填充，保像素硬边；不使用渐变或抗锯齿。
    */
   drawMoon: function () {
@@ -81,7 +92,7 @@ Page({
         g.scale(dpr, dpr)
         g.clearRect(0, 0, w, h)
 
-        const k = Math.min(1, Math.max(0, (self.data.durationMin || 0) / config.SLEEP_FULL_MIN))
+        const k = Math.min(1, Math.max(0, (self.data.durationMin || 0) / config.SLEEP_PASS_MIN))
         const N = 18
         const cell = Math.min(w, h) / N
         const cx = N / 2
